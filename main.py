@@ -35,3 +35,13 @@ async def twitter(url: str):
 async def Twitter_v2(url: str):
     from src.tweet import get_url_download
     return get_url_download(url)
+
+@app.get("/api/btc")
+async def btc():
+    from API.BTC import get_btc_price
+    return get_btc_price()
+
+@app.get("/api/eth")
+async def eth():
+    from API.ETH import get_eth_price
+    return get_eth_price()

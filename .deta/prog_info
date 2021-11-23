@@ -1,0 +1,1 @@
+{"id":"934debde-43db-4f3f-9959-e67ea04c0046","space":13585,"runtime":"python3.9","name":"APIS","path":"bf0wpw","project":"c04vlcg7","account":"144798365827","region":"ap-southeast-1","deps":["youtube_dl==2021.6.6","requests==2.26.0","pytube==11.0.1","beautifulsoup4==4.10.0","fastapi==0.70.0","uvicorn"],"envs":null,"public":true,"log_level":"debug","cron":""}
