@@ -14,7 +14,6 @@ def youtube_url_validation(url):
 def download_youtube_video(url):
     if youtube_url_validation(url):
         from pytube import YouTube
-        url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
         yt = YouTube(url)
         print(yt.streams.get_highest_resolution().url)
         print(yt.streams.get_lowest_resolution().url)
