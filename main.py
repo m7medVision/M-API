@@ -11,7 +11,7 @@ def read_root():
                 "instagram": "https://instagram.com/majhcc",
                 "website": "https://majhcc.pw"
             },
-            "version": "0.0.1"  
+            "version": "0.0.5"  
             }  
 
 @app.get("/api/yt")
