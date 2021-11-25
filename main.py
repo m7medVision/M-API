@@ -48,6 +48,9 @@ async def eth():
 
 @app.post("/api/vht")
 async def vht(url : str, s : str = get_random_str(5)):
+    """
+    This api is for v.ht.
+    """
     from src.v_ht import short_url
     return short_url(url, s)
 
