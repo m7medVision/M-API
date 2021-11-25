@@ -1,12 +1,12 @@
 import requests
 import json
 from bs4 import BeautifulSoup
-def short_url(url):
+def short_url(url,SUFFIX):
     res = requests.get('https://v.ht/')
     PHPSESSID = res.cookies['PHPSESSID']
     data = {
-        'txt_url': 'https://ufile.io/27pucfhr',
-        'txt_name': 'J712ssf',
+        'txt_url': url,
+        'txt_name': SUFFIX,
     }
     headers = {
         'Accept': '*/*',

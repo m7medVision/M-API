@@ -47,6 +47,7 @@ async def eth():
     return get_eth_price()
 
 @app.get("/api/vht")
-async def vht(url : str):
+async def vht(url : str, SUFFIX : str):
     from src.v_ht import short_url
-    return short_url()
+    return short_url(url, SUFFIX)
+
