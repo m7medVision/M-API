@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 app = FastAPI()
-import src.random_str as get_random_str
+from src.random_str import get_random_str
 @app.get("/")
 def read_root():
     return {"dev": "@majhcc", 
@@ -46,8 +46,8 @@ async def eth():
     from API.ETH import get_eth_price
     return get_eth_price()
 
-@app.get("/api/vht")
-async def vht(url : str, SUFFIX : str):
+@app.post("/api/vht")
+async def vht(url : str, s : str = get_random_str(5)):
     from src.v_ht import short_url
     return short_url(url, SUFFIX)
 
