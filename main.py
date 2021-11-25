@@ -45,3 +45,8 @@ async def btc():
 async def eth():
     from API.ETH import get_eth_price
     return get_eth_price()
+
+@app.get("/api/vht")
+async def vht(url : str):
+    from src.v_ht import short_url
+    return short_url()
