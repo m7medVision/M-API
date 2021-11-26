@@ -60,7 +60,7 @@ async def vht(url : str, s : str = get_random_str(5)):
 @app.get("/api/ip")
 def read_root(request: Request):
     client_host = request.client.host
-    return {"client_host": client_host}
+    return {"ip": client_host}
 
 @app.get('/favicon.ico', include_in_schema=False)
 def favicon():
