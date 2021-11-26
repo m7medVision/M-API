@@ -1,7 +1,10 @@
-from fastapi import FastAPI
+from logging import debug
+from fastapi import FastAPI, Request
+from fastapi.responses import FileResponse
 
 app = FastAPI()
 from src.random_str import get_random_str
+
 @app.get("/")
 def read_root():
     return {"dev": "@majhcc", 
@@ -54,3 +57,15 @@ async def vht(url : str, s : str = get_random_str(5)):
     from src.v_ht import short_url
     return short_url(url, s)
 
+@app.get("/api/ip")
+def read_root(request: Request):
+    client_host = request.client.host
+    return {"client_host": client_host}
+
+@app.get('/favicon.ico', include_in_schema=False)
+def favicon():
+    return FileResponse('static/favicon.ico')
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, port=8011, reload=True)
