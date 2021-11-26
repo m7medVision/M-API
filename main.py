@@ -3,27 +3,18 @@ from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse
 
 description = """
-This is MAJHCC's(Mohammed Aljahawri) API helps you to do some cool stuffs.
-
-[-] This API is still under development.
-[+] This API is working perfectly.
-[+] This API is Fast and Simple.
-[+] This API is Secure.
-[+] This API is Open Source.
-[+] This API is Free.
+# This is MAJHCC's  (Mohammed Aljahawri)   API helps you to do some cool stuffs.<br>
+<br>
+[-] This API is still under development.<br>
+[+] This API is working perfectly.<br>
+[+] This API is Fast and Simple.<br>
+[+] This API is Secure.<br>
+[+] This API is Open Source.<br>
+[+] This API is Free.<br>
 
 """
 
-
-app = FastAPI(
-    title="MAJHCC",
-    description=description,
-    version="0.2.0",
-    contact={
-        "name": "Mohammed Al-jahwari",
-        "url": "https:/majhcc.pw/",
-        "email": "admin@majhcc.pw",
-    })
+app = FastAPI(title="MAJHCC", description=description, version="0.2.0")
 from src.random_str import get_random_str
 
 @app.get("/")
@@ -35,7 +26,7 @@ def read_root():
                 "instagram": "https://instagram.com/majhcc",
                 "website": "https://majhcc.pw"
             },
-            "version": "0.0.5"  
+            "version": "0.2.0"  
             }  
 
 @app.get("/api/yt")
@@ -102,7 +93,7 @@ async def vht(url : str, s : str = get_random_str(5)):
     return short_url(url, s)
 
 @app.get("/api/ip")
-def read_root(request: Request):
+def ip(request: Request):
     """
     This returns your IP address.
     """
@@ -115,4 +106,4 @@ def favicon():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, port=8011, reload=True)
+    uvicorn.run(app, port=8011)
