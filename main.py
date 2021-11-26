@@ -12,10 +12,6 @@ This is MAJHCC's(Mohammed Aljahawri) API helps you to do some cool stuffs.
 [+] This API is Open Source.
 [+] This API is Free.
 
-
-
-
-
 """
 
 
@@ -27,13 +23,7 @@ app = FastAPI(
         "name": "Mohammed Al-jahwari",
         "url": "https:/majhcc.pw/",
         "email": "admin@majhcc.pw",
-    },
-    license_info={
-        "name": "Apache 2.0",
-        "url": "https://www.apache.org/licenses/LICENSE-2.0.html",
-    },
-
-)
+    })
 from src.random_str import get_random_str
 
 @app.get("/")
