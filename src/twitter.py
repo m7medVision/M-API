@@ -22,4 +22,4 @@ def download_twitter_video(url):
     else:
         return {'status': "error",
             "error" : "Not a valid Twitter URL"}
-print(download_twitter_video("https://twitter.com/ISSAHINAI1990/status/1461927197753630723?s=20"))
+# print(download_twitter_video("https://twitter.com/ISSAHINAI1990/status/1461927197753630723?s=20"))
