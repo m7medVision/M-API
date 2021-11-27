@@ -18,7 +18,7 @@ description = """
 [+] This API is Free.<br>
 """
 
-app = FastAPI(title="MAJHCC's API", description=description, version="0.2.0")
+app = FastAPI(title="MAJHCC's API", description=description, version="0.2.0", redoc_url="/docs", docs_url=None)
 from src.random_str import get_random_str
 
 @app.get("/")
