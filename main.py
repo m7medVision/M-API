@@ -163,22 +163,26 @@ async def eth():
 class vht(BaseModel):
     url : str
     dev : str
+class postvht(BaseModel):
+    url : str
+    s : Optional[str] = get_random_str(5)
 @app.post("/api/vht", response_model=vht)
-async def vht(url : str, s : str = get_random_str(5)):
+async def vht(data : postvht):
     """
     This can shorten your URL using v.ht servise.<br>
     <pre>
-    :param url: URL to shorten<br>
-    :param s: SUFFIX<br>
     :return: JSON<br>
     </pre>
     example:<br>
     <br>
     <code>
+    import requests</br>
+    data = '{"url": "http://127.0.0.1:8000/docs#/default/vht_api_vht_post", "s": "DOdqQ"}'</br>
+    response = requests.post('https://server1.majhcc.xyz/api/vht', data=data)
     <code/>
     """
     from src.v_ht import short_url
-    return short_url(url, s)
+    return short_url(data.url , data.s)
 
 @app.get("/api/ip", response_model=BTC)
 def ip(request: Request):
