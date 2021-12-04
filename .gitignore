@@ -1,6 +1,7 @@
 *.ipynb
 __pycache__/
 *.py[cod]
+.vscode/
 *$py.class
 
 # C extensions

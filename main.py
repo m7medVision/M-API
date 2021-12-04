@@ -169,6 +169,16 @@ def ip(request: Request):
     """
     client_host = request.client.host
     return {"ip": client_host}
+@app.get("/api/fake-address")
+def fake_address(request: Request):
+    """
+    This returns fake address.<br>
+    <pre>
+    :return: json<br>
+    </pre>
+    """
+    from src.fake_add import fake_add
+    return fake_add()
 
 @app.get('/favicon.ico', include_in_schema=False)
 def favicon():
