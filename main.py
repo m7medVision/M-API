@@ -5,7 +5,9 @@ from pydantic import BaseModel
 from typing import Optional
 
 from pydantic.types import Json
-
+import requests
+import json
+import re
 
 description = """
 # This is MAJHCC's  (Mohammed Aljahawri)   API helps you to do some cool stuffs.
@@ -178,6 +180,37 @@ def fake_address(request: Request):
     """
     from src.fake_add import fake_add
     return fake_add()
+
+@app.get('/api/downloader/auto')
+def downloader_auto(url: str):
+    """
+    This can download videos from YouTube, TikTok, Twitter, and other websites.<br>
+    <pre>
+    :param url: URL<br>
+    :return: JSON<br>
+    </pre>
+    Example:<br>
+    <br>
+    <code>
+    https://server1.majhcc.xyz/api/downloader/auto?url=https://www.youtube.com/watch?v=dQw4w9WgXcQ
+    </code>
+    """
+    # regex youtube url
+    if re.match(r'(https?://)?(www\.)?(youtube\.com|youtu\.?be)/.+', url):
+        from src.youtube import download_youtube_video
+        return download_youtube_video(url)
+    # regex tiktok url
+    elif re.match(r'(https?://)?(www\.)?(tiktok\.com|tiktok\.net)/.+', url):
+        from src.tiktok import getVideo
+        json = getVideo(url)
+        json['dev'] = "@majhcc"
+        return json
+    # regex twitter url
+    elif re.match(r'(https?://)?(www\.)?(twitter\.com|twitter\.net)/.+', url):
+        from src.twitter import download_twitter_video
+        return download_twitter_video(url)
+
+@app.get('/api/downloader/audio')
 
 @app.get('/favicon.ico', include_in_schema=False)
 def favicon():
