@@ -229,8 +229,6 @@ def caller_id(request: Request, number: str, country_code: str):
     from API.caller_id import get_names
     return get_names(number, country_code)
 
-@app.get('/api/')
-
 @app.get('/favicon.ico', include_in_schema=False)
 def favicon():
     return FileResponse('static/favicon.ico')
