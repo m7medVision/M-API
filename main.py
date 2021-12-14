@@ -16,7 +16,6 @@ description = """
 [+] This API is working perfectly.<br>
 [+] This API is Fast and Simple.<br>
 [+] This API is Secure.<br>
-[+] This API is Open Source.<br>
 [+] This API is Free.<br>
 """
 
@@ -157,6 +156,8 @@ async def vht(data : postvht):
     response = requests.post('https://server1.majhcc.xyz/api/vht', data=data)
     <code/>
     """
+    if data.url == None:
+        return {"error": "Please enter a URL"}
     from src.v_ht import short_url
     return short_url(data.url , data.s)
 
@@ -210,7 +211,25 @@ def downloader_auto(url: str):
         from src.twitter import download_twitter_video
         return download_twitter_video(url)
 
-@app.get('/api/downloader/audio')
+@app.get('/api/caller-id')
+def caller_id(request: Request, number: str, country_code: str):
+    """
+    This can get caller id from any country.<br>
+    <pre>
+    :param number: Number<br>
+    :param country_code: Country Code<br>
+    :return: JSON<br>
+    </pre>
+    Example:<br>
+    <br>
+    <code>
+    https://server1.majhcc.xyz/api/caller-id?country_code=US&number=123456789
+    </code>
+    """
+    from API.caller_id import get_names
+    return get_names(number, country_code)
+
+@app.get('/api/')
 
 @app.get('/favicon.ico', include_in_schema=False)
 def favicon():
