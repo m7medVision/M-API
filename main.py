@@ -180,7 +180,10 @@ def fake_address(request: Request):
     </pre>
     """
     from src.fake_add import fake_add
-    return fake_add()
+    try:
+        return fake_add()
+    except:
+        return {"error": "Something went wrong"}
 
 @app.get('/api/downloader/auto')
 def downloader_auto(url: str):
