@@ -1,4 +1,5 @@
 # function that bring fake address from https://www.fakeaddressgenerator.com/
+from itsdangerous import json
 import requests
 from bs4 import BeautifulSoup
 import random
@@ -18,4 +19,8 @@ def fake_add():
     }
 
     response = requests.post('https://www.prepostseo.com/frontend/fakeAddressGenerator', headers=headers, data=data)
-    return response.json()[0]
+    json = response.json()[0]
+    name = json['name']
+    json['FristName'] = name.split(' ')[-2]
+    json['LastName'] = name.split(' ')[-1]
+    return json

@@ -212,7 +212,7 @@ def downloader_auto(url: str):
         return download_twitter_video(url)
 
 @app.get('/api/caller-id')
-def caller_id(request: Request, number: str, country_code: str):
+def caller_id(number, country_code):
     """
     This can get caller id from any country.<br>
     <pre>
@@ -227,7 +227,7 @@ def caller_id(request: Request, number: str, country_code: str):
     </code>
     """
     from API.caller_id import get_names
-    return get_names(number, country_code)
+    return get_names(number=str(number), country=country_code)
 
 @app.get('/favicon.ico', include_in_schema=False)
 def favicon():
