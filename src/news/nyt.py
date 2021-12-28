@@ -10,7 +10,7 @@ def get_news():
         headline = i.get_text().strip()
         response.append(
             {
-            "url": 'https://www.nytimes.com/{}'.format(i.find('a').get('href')),
+            "url": 'https://www.nytimes.com{}'.format(i.find('a').get('href')),
             'headline': f'{headline}'
             }
         )
