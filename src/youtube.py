@@ -60,4 +60,4 @@ def download_youtube_video(url):
             'formats': 'No formats',
             "dev": "@majhcc"
         }
-# print(download_youtube_video("https://www.youtube.com/watch?v=dQw4w9WgXcQ"))
+print(download_youtube_video("https://www.youtube.com/watch?v=dQw4w9WgXcQ"))
