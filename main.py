@@ -21,7 +21,7 @@ description = """
 
 app = FastAPI(title="MAJHCC's API", description=description, version="0.2.3")
 from src.random_str import get_random_str
-
+ 
 @app.get("/")
 def read_root():
     return {"dev": "@majhcc", 
@@ -231,6 +231,26 @@ def caller_id(number, country_code):
     """
     from API.caller_id import get_names
     return get_names(number=str(number), country=country_code)
+
+@app.get('/api/google_search_results')
+def google_search_results(query: str):
+    """
+    This can get google search results.<br>
+    <pre>
+    :param query: Search Query<br>
+    :return: JSON<br>
+    </pre>
+    Example:<br>
+    <br>
+    <code>
+    https://server1.majhcc.xyz/api/google_search_results?query=majhcc
+    </code>
+    """
+    from src.google_search import get_google_results
+    return {
+        'status': 'success',
+        'results': get_google_results(query)
+        }
 
 @app.get('/favicon.ico', include_in_schema=False)
 def favicon():
