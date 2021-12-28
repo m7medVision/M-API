@@ -359,6 +359,23 @@ def news_nyt():
         return {
         'status': 'error'
         }
+@app.get('/api/yt/dislike')
+def yt_dislike(video_id: str):
+    from API.youtubedislike import get_dislike
+    try:
+        return {
+            'status': 'success',
+            'dislike': get_dislike(video_id)
+            }
+    except Exception as e:
+        data = {
+            'content': f'Get dislike from youtube api Error: ***{str(e)}***'
+        }
+        requests.post(WEBHOOKURL, data=data)
+        return {
+        'status': 'error'
+        }
+
 @app.get('/favicon.ico', include_in_schema=False)
 def favicon():
     return FileResponse('static/favicon.ico')
