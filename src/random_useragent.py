@@ -1,4 +1,7 @@
 # open user-agents.txt and return a random user-agent
+"""
+Coded by @majhcc
+"""
 import random
 import requests
 def random_useragent():

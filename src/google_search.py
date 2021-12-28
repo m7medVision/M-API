@@ -1,3 +1,6 @@
+"""
+Coded by @majhcc
+"""
 import requests
 import lxml.html
 from bs4 import BeautifulSoup

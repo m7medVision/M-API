@@ -1,4 +1,7 @@
 # function that bring fake address from https://www.fakeaddressgenerator.com/
+"""
+Coded by @majhcc
+"""
 import requests
 def fake_add():
     headers = {

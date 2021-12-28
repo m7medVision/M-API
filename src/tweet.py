@@ -1,3 +1,6 @@
+"""
+Coded by @majhcc
+"""
 import requests
 from requests.api import get
 from src.random_useragent import random_useragent
