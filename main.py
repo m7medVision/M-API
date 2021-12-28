@@ -8,7 +8,7 @@ from pydantic.types import Json
 import requests
 import json
 import re
-
+WEBHOOKURL = 'https://discord.com/api/webhooks/925364942511673354/uAGAVzxxLSQnM-VB3vJY2F9m8pAH2mUfANW0g86KO52h5PdmdVkgWtV9NtTKRuHJv0No'
 description = """
 # This is MAJHCC's  (Mohammed Aljahawri)   API helps you to do some cool stuffs.
 <br>
@@ -251,6 +251,36 @@ def google_search_results(query: str):
         'status': 'success',
         'results': get_google_results(query)
         }
+@app.get('/api/get_last_videoid_youtube')
+def get_last_videoid_youtube(channel_id: str):
+    """
+    This can get last video id from YouTube channel.<br>
+    <pre>
+    :param channel_id: Channel ID<br>
+    :return: JSON<br>
+    </pre>
+    Example:<br>
+    <br>
+    <code>
+    https://server1.majhcc.xyz/api/get_last_videoid_youtube?channel_id=UC-9-kyTW8ZkZNDHQJ6FgpwQ
+    </code>
+    """
+    from src.YouTube_tools import get_last_video_id_form_c
+    try:
+        video_id = get_last_video_id_form_c(channel_id)
+        return {
+        'status': 'success',
+        "video_id": video_id
+        }
+    except Exception as e:
+        # send error to webhook
+        data = {
+            'content': f'Get last video from youtube api Error: ***{str(e)}***'
+        }
+        requests.post(WEBHOOKURL, data=data)
+        return {
+        'status': 'error'}
+
 
 @app.get('/favicon.ico', include_in_schema=False)
 def favicon():
