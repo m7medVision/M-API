@@ -280,6 +280,38 @@ def get_last_videoid_youtube(channel_id: str):
         requests.post(WEBHOOKURL, data=data)
         return {
         'status': 'error'}
+@app.get('/api/news/rt')
+def news_rt():
+    from src.news.RT import get_news
+    try:
+        return {
+            'status': 'success',
+            'news': get_news()
+            }
+    except Exception as e:
+        data = {
+            'content': f'Get news from RT api Error: ***{str(e)}***'
+        }
+        requests.post(WEBHOOKURL, data=data)
+        return {
+        'status': 'error'}
+@app.get('/api/news/bbc')
+def news_bbc():
+    from src.news.bbc import get_news
+    try:
+        return {
+            'status': 'success',
+            'news': get_news()
+            }
+    except Exception as e:
+        data = {
+            'content': f'Get news from BBC api Error: ***{str(e)}***'
+        }
+        requests.post(WEBHOOKURL, data=data)
+        return {
+        'status': 'error'
+        }
+@app.get('/api/news/cnn')
 
 
 @app.get('/favicon.ico', include_in_schema=False)
