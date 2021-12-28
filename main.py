@@ -262,7 +262,7 @@ def get_last_videoid_youtube(channel_id: str):
     Example:<br>
     <br>
     <code>
-    https://server1.majhcc.xyz/api/get_last_videoid_youtube?channel_id=UC-9-kyTW8ZkZNDHQJ6FgpwQ
+    https://server1.majhcc.xyz/api/get_last_videoid_youtube?channel_id=UCfzuZdqkX2-jyNXRDGoOpNA
     </code>
     """
     from src.YouTube_tools import get_last_video_id_form_c
