@@ -312,8 +312,53 @@ def news_bbc():
         'status': 'error'
         }
 @app.get('/api/news/cnn')
-
-
+def news_cnn():
+    from src.news.CNN import get_news
+    try:
+        return {
+            'status': 'success',
+            'news': get_news()
+            }
+    except Exception as e:
+        data = {
+            'content': f'Get news from CNN api Error: ***{str(e)}***'
+        }
+        requests.post(WEBHOOKURL, data=data)
+        return {
+        'status': 'error'
+        }
+@app.get('/api/news/fox')
+def news_fox():
+    from src.news.fox import get_news
+    try:
+        return {
+            'status': 'success',
+            'news': get_news()
+            }
+    except Exception as e:
+        data = {
+            'content': f'Get news from FOX api Error: ***{str(e)}***'
+        }
+        requests.post(WEBHOOKURL, data=data)
+        return {
+        'status': 'error'
+        }
+@app.get('/api/news/nyt')
+def news_nyt():
+    from src.news.nyt import get_news
+    try:
+        return {
+            'status': 'success',
+            'news': get_news()
+            }
+    except Exception as e:
+        data = {
+            'content': f'Get news from NYT api Error: ***{str(e)}***'
+        }
+        requests.post(WEBHOOKURL, data=data)
+        return {
+        'status': 'error'
+        }
 @app.get('/favicon.ico', include_in_schema=False)
 def favicon():
     return FileResponse('static/favicon.ico')
