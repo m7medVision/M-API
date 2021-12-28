@@ -11,7 +11,7 @@ def get_news():
             response.append(
 
                 {
-                "url": 'https://www.rt.com/{}'.format(i.get('href')),
+                "url": 'https://www.rt.com{}'.format(i.get('href')),
                 'headline': f'{i.get_text().strip()}'
                 }
                 
