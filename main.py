@@ -1,4 +1,5 @@
 from logging import debug
+from unittest import result
 from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
@@ -370,6 +371,60 @@ def yt_dislike(video_id: str):
     except Exception as e:
         data = {
             'content': f'Get dislike from youtube api Error: ***{str(e)}***'
+        }
+        requests.post(WEBHOOKURL, data=data)
+        return {
+        'status': 'error'
+        }
+@app.get('/api/email/checker/google')
+def email_checker_google(email: str):
+    from src.Emails.checker.gmail import create_random_call
+    try:
+        result = create_random_call(email)
+        if result:
+            return {
+                'status': 'success',
+                'result': 'Email is valid'
+                }
+        elif result == False:
+            return {
+                'status': 'success',
+                'result': 'Email is invalid'
+                }
+        else:
+            return {
+                'status': 'error'
+                }
+    except Exception as e:
+        data = {
+            'content': f'Get email checker from google api Error: ***{str(e)}***'
+        }
+        requests.post(WEBHOOKURL, data=data)
+        return {
+        'status': 'error'
+        }
+@app.get('/api/email/checker/microsoft')
+def email_checker_microsoft(email: str):
+    from src.Emails.checker.hotmail import hotmail
+    try:
+        result = hotmail(email)
+        if result:
+            return {
+                'status': 'success',
+                'result': 'Email is valid'
+                }
+        elif result == False:
+            return {
+                'status': 'success',
+                'result': 'Email is invalid'
+                }
+        else:
+            return {
+                'status': 'error'
+                }
+    except Exception as e:
+        data = {
+            'content': f'Get email checker from microsoft api Error: ***{str(e)}***'
         }
         requests.post(WEBHOOKURL, data=data)
         return {
