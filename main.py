@@ -1,15 +1,22 @@
+from src.random_str import get_random_str
 from logging import debug
 from unittest import result
 from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from typing import Optional
-
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 from pydantic.types import Json
 import requests
 import json
 import re
+
+
 WEBHOOKURL = 'https://discord.com/api/webhooks/925364942511673354/uAGAVzxxLSQnM-VB3vJY2F9m8pAH2mUfANW0g86KO52h5PdmdVkgWtV9NtTKRuHJv0No'
+
+
 description = """
 # This is MAJHCC's  (Mohammed Aljahawri)   API helps you to do some cool stuffs.
 <br>
@@ -20,11 +27,16 @@ description = """
 [+] This API is Free.<br>
 """
 
+
+limiter = Limiter(key_func=get_remote_address)
 app = FastAPI(title="MAJHCC's API", description=description, version="0.2.3")
-from src.random_str import get_random_str
- 
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+
 @app.get("/")
-def read_root():
+@limiter.limit("1/minute")
+def read_root(request: Request):
     return {"dev": "@majhcc", 
             "profiles": {
                 "twitter": "https://twitter.com/majhcc",
@@ -430,7 +442,76 @@ def email_checker_microsoft(email: str):
         return {
         'status': 'error'
         }
-
+@app.get('/api/proxy/scrape/free-proxy-list')
+@limiter.limit("3/minute")
+def proxy_scrape_free_proxy_list(request: Request):
+    """
+    This API scrape proxies from free-proxy-list.com<br>
+    <pre>
+    :return: JSON<br>
+    </pre>
+    Example:<br>
+    <br>
+    <code>
+    https://server1.majhcc.xyz/api/proxy/scrape/free-proxy-list
+    </code>
+    """
+    from src.proxy.scraper.free_proxy_list import get_list
+    try:
+        return {
+            'status': 'success',
+            'proxies': get_list()
+            }
+    except Exception as e:
+        data = {
+            'content': f'Scrape proxy from free-proxy-list.com Error: ***{str(e)}***'
+        }
+        requests.post(WEBHOOKURL, data=data)
+        return {
+        'status': 'error'
+        }
+@app.get('/api/proxy/checker/majhcc_checker')
+@limiter.limit("40/minute")
+def proxy_checker_majhcc_checker(request: Request, proxy: str):
+    """
+    This API check proxies from majhcc_checker<br>
+    <pre>
+    :param proxy: Proxy<br>
+    :param url: URL<br>
+    :param timeout: Timeout<br>
+    :return: JSON<br>
+    </pre>
+    Example:<br>
+    <br>
+    <code>
+    https://server1.majhcc.xyz/api/proxy/checker/majhcc_checker?proxy=http%3A%2F%2F127.0.0.1%3A8080&url=https%3A%2F%2Fwww.google.com&timeout=5
+    </code>
+    """
+    from src.proxy.checker.majhcc_checker import checker
+    try:
+        status, result  = checker(proxy)
+        if status:
+            return {
+                'status': 'success',
+                'result': result
+                }
+        elif status == False:
+            return {
+                'status': 'success',
+                'result': result
+                }
+        else:
+            return {
+                'status': 'error'
+                }
+    except Exception as e:
+        data = {
+            'content': f'Check proxy from majhcc_checker Error: ***{str(e)}***'
+        }
+        requests.post(WEBHOOKURL, data=data)
+        return {
+        'status': 'error'
+        }
 @app.get('/favicon.ico', include_in_schema=False)
 def favicon():
     return FileResponse('static/favicon.ico')
