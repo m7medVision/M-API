@@ -2,7 +2,7 @@ from src.random_str import get_random_str
 from logging import debug
 from unittest import result
 from fastapi import FastAPI, Request
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, PlainTextResponse, RedirectResponse, StreamingResponse
 from pydantic import BaseModel
 from typing import Optional
 from slowapi import Limiter, _rate_limit_exceeded_handler
@@ -34,18 +34,9 @@ app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 
-@app.get("/")
-@limiter.limit("1/minute")
-def read_root(request: Request):
-    return {"dev": "@majhcc", 
-            "profiles": {
-                "twitter": "https://twitter.com/majhcc",
-                "github": "https://github.com/majhcc",
-                "instagram": "https://instagram.com/majhcc",
-                "website": "https://majhcc.pw"
-            },
-            "version": "0.2.0"  
-            }
+@app.get("/", response_class=RedirectResponse)
+def read_root():
+    return RedirectResponse("/docs")
 @app.get("/api/yt")
 async def YouTube(url: str):
     """
@@ -246,7 +237,8 @@ def caller_id(number, country_code):
     return get_names(number=str(number), country=country_code)
 
 @app.get('/api/google_search_results')
-def google_search_results(query: str):
+@limiter.limit("5/minute")
+def google_search_results(query: str, request: Request):
     """
     This can get google search results.<br>
     <pre>
@@ -265,7 +257,8 @@ def google_search_results(query: str):
         'results': get_google_results(query)
         }
 @app.get('/api/get_last_videoid_youtube')
-def get_last_videoid_youtube(channel_id: str):
+@limiter.limit("14/minute")
+def get_last_videoid_youtube(channel_id: str, request: Request):
     """
     This can get last video id from YouTube channel.<br>
     <pre>
@@ -389,7 +382,8 @@ def yt_dislike(video_id: str):
         'status': 'error'
         }
 @app.get('/api/email/checker/google')
-def email_checker_google(email: str):
+@limiter.limit("5/minute")
+def email_checker_google(email: str, request: Request):
     from src.Emails.checker.gmail import create_random_call
     try:
         result = create_random_call(email)
@@ -416,7 +410,8 @@ def email_checker_google(email: str):
         'status': 'error'
         }
 @app.get('/api/email/checker/microsoft')
-def email_checker_microsoft(email: str):
+@limiter.limit("5/minute")
+def email_checker_microsoft(email: str, request: Request):
     from src.Emails.checker.hotmail import hotmail
     try:
         result = hotmail(email)
@@ -443,7 +438,7 @@ def email_checker_microsoft(email: str):
         'status': 'error'
         }
 @app.get('/api/proxy/scrape/free-proxy-list')
-@limiter.limit("3/minute")
+@limiter.limit("5/minute")
 def proxy_scrape_free_proxy_list(request: Request):
     """
     This API scrape proxies from free-proxy-list.com<br>
@@ -458,10 +453,8 @@ def proxy_scrape_free_proxy_list(request: Request):
     """
     from src.proxy.scraper.free_proxy_list import get_list
     try:
-        return {
-            'status': 'success',
-            'proxies': get_list()
-            }
+        proxies = '\n'.join(get_list())
+        return PlainTextResponse(proxies, media_type='text/plain')
     except Exception as e:
         data = {
             'content': f'Scrape proxy from free-proxy-list.com Error: ***{str(e)}***'
@@ -470,43 +463,27 @@ def proxy_scrape_free_proxy_list(request: Request):
         return {
         'status': 'error'
         }
-@app.get('/api/proxy/checker/majhcc_checker')
-@limiter.limit("40/minute")
-def proxy_checker_majhcc_checker(request: Request, proxy: str):
+@app.get('/api/proxy/scrape/freeproxylistsnet')
+@limiter.limit("5/minute")
+def proxy_scrape_freeproxylistsnet(request: Request):
     """
-    This API check proxies from majhcc_checker<br>
+    This API scrape proxies from freeproxylists.net<br>
     <pre>
-    :param proxy: Proxy<br>
-    :param url: URL<br>
-    :param timeout: Timeout<br>
     :return: JSON<br>
     </pre>
     Example:<br>
     <br>
     <code>
-    https://server1.majhcc.xyz/api/proxy/checker/majhcc_checker?proxy=http%3A%2F%2F127.0.0.1%3A8080&url=https%3A%2F%2Fwww.google.com&timeout=5
+    https://server1.majhcc.xyz/api/proxy/scrape/freeproxylistsnet
     </code>
     """
-    from src.proxy.checker.majhcc_checker import checker
+    from src.proxy.scraper.freeproxylistsnet import get_list
     try:
-        status, result  = checker(proxy)
-        if status:
-            return {
-                'status': 'success',
-                'result': result
-                }
-        elif status == False:
-            return {
-                'status': 'success',
-                'result': result
-                }
-        else:
-            return {
-                'status': 'error'
-                }
+        proxies = '\n'.join(get_list())
+        return PlainTextResponse(proxies, media_type='text/plain')
     except Exception as e:
         data = {
-            'content': f'Check proxy from majhcc_checker Error: ***{str(e)}***'
+            'content': f'Scrape proxy from freeproxylists.net Error: ***{str(e)}***'
         }
         requests.post(WEBHOOKURL, data=data)
         return {
