@@ -14,6 +14,8 @@ import json
 import re
 
 
+
+
 WEBHOOKURL = 'https://discord.com/api/webhooks/925364942511673354/uAGAVzxxLSQnM-VB3vJY2F9m8pAH2mUfANW0g86KO52h5PdmdVkgWtV9NtTKRuHJv0No'
 
 
@@ -70,7 +72,7 @@ async def TikTok(url: str):
     Example:<br>
     <br>
     <code>
-    https://server1.majhcc.xyz/api/tk?url=https://vm.tiktok.com/Zzv6xq/
+    https://server1.majhcc.xyz/api/tk?url=https://www.tiktok.com/@billieeilish/video/7014570556607433990
     </code>
     
     """
@@ -90,11 +92,19 @@ async def twitter(url: str):
     Example:<br>
     <br>
     <code>
-    https://server1.majhcc.xyz/api/twitter?url=https://twitter.com/majhcc/status/1234
+    https://server1.majhcc.xyz/api/twitter?url=https://twitter.com/AJArabic/status/1476130879437037569
     </code>
     """
     from src.twitter import download_twitter_video
-    return download_twitter_video(url)
+    try:
+        return download_twitter_video(url)
+    except Exception as e:
+        # send to webhook
+        data = {
+            "content": f"***{e}***"
+        }
+        requests.post(WEBHOOKURL, data=data)
+        return {"error": "Something went wrong"}
 @app.get("/api/tw")
 async def Twitter_v2(url: str):
     """
@@ -106,11 +116,23 @@ async def Twitter_v2(url: str):
     Example:<br>
     <br>
     <code>
-    https://server1.majhcc.xyz/api/tw?url=https://twitter.com/majhcc/status/1234
+    https://server1.majhcc.xyz/api/tw?url=https://twitter.com/AJArabic/status/1476130879437037569
     </code>
     """
     from src.tweet import get_url_download
-    return get_url_download(url)
+    try:
+        # twitter url regex vailidation
+        if re.match(r'https://twitter.com/[A-Za-z0-9_]+/status/[0-9]+', url):
+            return get_url_download(url)
+        else:
+            return {"error": "Invalid URL"}
+    except Exception as e:
+        # send to webhook
+        data = {
+            "content": f"***{e}***"
+        }
+        requests.post(WEBHOOKURL, data=data)
+        return {"error": "Something went wrong"}
 @app.get("/api/BTC")
 async def btc():
     """
@@ -125,7 +147,17 @@ async def btc():
     </code>
     """
     from API.BTC import get_btc_price
-    return get_btc_price()
+    try:
+        return get_btc_price()
+    except Exception as e:
+        # send to webhook
+        data = {
+            "content": f"***{e}***"
+        }
+        requests.post(WEBHOOKURL, data=data)
+        return {"error": "Something went wrong"}
+
+
 
 @app.get("/api/ETH")
 async def eth():
@@ -141,10 +173,22 @@ async def eth():
     </code>
     """
     from API.ETH import get_eth_price
-    return get_eth_price()
+    try:
+        return get_eth_price()
+    except Exception as e:
+        # send to webhook
+        data = {
+            "content": f"***{e}***"
+        }
+        requests.post(WEBHOOKURL, data=data)
+        return {"error": "Something went wrong"}
+
+
 class postvht(BaseModel):
     url : str
     s : Optional[str] = get_random_str(5)
+
+
 @app.post("/api/vht")
 async def vht(data : postvht):
     """
@@ -163,7 +207,17 @@ async def vht(data : postvht):
     if data.url == None:
         return {"error": "Please enter a URL"}
     from src.v_ht import short_url
-    return short_url(data.url , data.s)
+    try:
+        return short_url(data.url , data.s)
+    except Exception as e:
+        # send to webhook
+        data = {
+            "content": f"***{e}***"
+        }
+        requests.post(WEBHOOKURL, data=data)
+        return {"error": "Something went wrong"}
+
+
 
 @app.get("/api/ip")
 def ip(request: Request):
@@ -176,6 +230,11 @@ def ip(request: Request):
     client_host = request.client.host
     return {"ip": client_host}
 @app.get("/api/fake-address")
+
+
+
+
+
 def fake_address(request: Request):
     """
     This returns fake address.<br>
@@ -186,8 +245,15 @@ def fake_address(request: Request):
     from src.fake_add import fake_add
     try:
         return fake_add()
-    except:
+    except Exception as e:
+        # send to webhook
+        data = {
+            "content": f"***{e}***"
+        }
+        requests.post(WEBHOOKURL, data=data)
         return {"error": "Something went wrong"}
+
+
 
 @app.get('/api/downloader/auto')
 def downloader_auto(url: str):
@@ -204,22 +270,35 @@ def downloader_auto(url: str):
     </code>
     """
     # regex youtube url
-    if re.match(r'(https?://)?(www\.)?(youtube\.com|youtu\.?be)/.+', url):
-        from src.youtube import download_youtube_video
-        return download_youtube_video(url)
-    # regex tiktok url
-    elif re.match(r'(https?://)?(www\.)?(tiktok\.com|tiktok\.net)/.+', url):
-        from src.tiktok import getVideo
-        json = getVideo(url)
-        json['dev'] = "@majhcc"
-        return json
-    # regex twitter url
-    elif re.match(r'(https?://)?(www\.)?(twitter\.com|twitter\.net)/.+', url):
-        from src.twitter import download_twitter_video
-        return download_twitter_video(url)
+    try:
+        if re.match(r'(https?://)?(www\.)?(youtube\.com|youtu\.?be)/.+', url):
+            from src.youtube import download_youtube_video
+            return download_youtube_video(url)
+        # regex tiktok url
+        elif re.match(r'(https?://)?(www\.)?(tiktok\.com|tiktok\.net)/.+', url):
+            from src.tiktok import getVideo
+            json = getVideo(url)
+            json['dev'] = "@majhcc"
+            return json
+        # regex twitter url
+        elif re.match(r'(https?://)?(www\.)?(twitter\.com|twitter\.net)/.+', url):
+            from src.twitter import download_twitter_video
+            return download_twitter_video(url)
+        else:
+            return {"error": "sorry this site is not available now please try to contact the developer @majhcc"}
+    except Exception as e:
+        # send to webhook
+        data = {
+            "content": f"***{e}***"
+        }
+        requests.post(WEBHOOKURL, data=data)
+        return {"error": "Something went wrong"}
+
+
 
 @app.get('/api/caller-id')
-def caller_id(number, country_code):
+@limiter.limit("5/minute")
+def caller_id(number, country_code, request: Request):
     """
     This can get caller id from any country.<br>
     <pre>
@@ -234,10 +313,21 @@ def caller_id(number, country_code):
     </code>
     """
     from API.caller_id import get_names
-    return get_names(number=str(number), country=country_code)
+    try:
+        return get_names(number=str(number), country=country_code)
+    except Exception as e:
+        # send to webhook
+        data = {
+            "content": f"***{e}***"
+        }
+        requests.post(WEBHOOKURL, data=data)
+        return {"error": "Something went wrong"}
+
+
+
 
 @app.get('/api/google_search_results')
-@limiter.limit("5/minute")
+@limiter.limit("15/minute")
 def google_search_results(query: str, request: Request):
     """
     This can get google search results.<br>
@@ -252,10 +342,21 @@ def google_search_results(query: str, request: Request):
     </code>
     """
     from src.google_search import get_google_results
-    return {
-        'status': 'success',
-        'results': get_google_results(query)
+    try:
+        return {
+            'status': 'success',
+            'results': get_google_results(query)
+            }
+    except Exception as e:
+        # send to webhook
+        data = {
+            "content": f"***{e}***"
         }
+        requests.post(WEBHOOKURL, data=data)
+        return {"error": "Something went wrong"}
+
+
+
 @app.get('/api/get_last_videoid_youtube')
 @limiter.limit("14/minute")
 def get_last_videoid_youtube(channel_id: str, request: Request):
@@ -286,6 +387,8 @@ def get_last_videoid_youtube(channel_id: str, request: Request):
         requests.post(WEBHOOKURL, data=data)
         return {
         'status': 'error'}
+
+
 @app.get('/api/news/rt')
 def news_rt():
     from src.news.RT import get_news
@@ -301,6 +404,9 @@ def news_rt():
         requests.post(WEBHOOKURL, data=data)
         return {
         'status': 'error'}
+
+
+
 @app.get('/api/news/bbc')
 def news_bbc():
     from src.news.bbc import get_news
@@ -317,6 +423,9 @@ def news_bbc():
         return {
         'status': 'error'
         }
+
+
+
 @app.get('/api/news/cnn')
 def news_cnn():
     from src.news.CNN import get_news
@@ -333,6 +442,9 @@ def news_cnn():
         return {
         'status': 'error'
         }
+
+
+
 @app.get('/api/news/fox')
 def news_fox():
     from src.news.fox import get_news
@@ -349,6 +461,9 @@ def news_fox():
         return {
         'status': 'error'
         }
+
+
+
 @app.get('/api/news/nyt')
 def news_nyt():
     from src.news.nyt import get_news
@@ -365,6 +480,9 @@ def news_nyt():
         return {
         'status': 'error'
         }
+
+
+
 @app.get('/api/yt/dislike')
 def yt_dislike(video_id: str):
     from API.youtubedislike import get_dislike
@@ -381,6 +499,9 @@ def yt_dislike(video_id: str):
         return {
         'status': 'error'
         }
+
+
+
 @app.get('/api/email/checker/google')
 @limiter.limit("5/minute")
 def email_checker_google(email: str, request: Request):
@@ -409,6 +530,9 @@ def email_checker_google(email: str, request: Request):
         return {
         'status': 'error'
         }
+
+
+
 @app.get('/api/email/checker/microsoft')
 @limiter.limit("5/minute")
 def email_checker_microsoft(email: str, request: Request):
@@ -437,6 +561,10 @@ def email_checker_microsoft(email: str, request: Request):
         return {
         'status': 'error'
         }
+
+
+
+
 @app.get('/api/proxy/scrape/free-proxy-list')
 @limiter.limit("5/minute")
 def proxy_scrape_free_proxy_list(request: Request):
@@ -463,6 +591,10 @@ def proxy_scrape_free_proxy_list(request: Request):
         return {
         'status': 'error'
         }
+
+
+
+
 @app.get('/api/proxy/scrape/freeproxylistsnet')
 @limiter.limit("5/minute")
 def proxy_scrape_freeproxylistsnet(request: Request):
@@ -489,9 +621,50 @@ def proxy_scrape_freeproxylistsnet(request: Request):
         return {
         'status': 'error'
         }
+
+
+
+@app.get('/api/tk/getlastvideoid')
+@limiter.limit("5/minute")
+def tk_getlastvideoid(request: Request, username: str):
+    """
+    This API get last video id from tiktok<br>
+    <pre>
+    :return: JSON<br>
+    </pre>
+    Example:<br>
+    <br>
+    <code>
+    https://server1.majhcc.xyz/api/tk/getlastvideoid?username=edsheeran
+    </code>
+    """
+    from src.tiktok_tools import get_last_video_id
+    from src.tiktok import getVideo
+    try:
+        id_ = get_last_video_id(username)
+        return {
+            'status': 'success',
+            'video_id': id_,
+            'tiktok_url': f'https://www.tiktok.com/@{username}/video/{id_}',
+            'download_url': getVideo(f'https://www.tiktok.com/@{username}/video/{id_}')['link']
+
+            }
+    except Exception as e:
+        data = {
+            'content': f'Get last video id from youtube api Error: ***{str(e)}***'
+        }
+        requests.post(WEBHOOKURL, data=data)
+        return {
+        'status': 'error'
+        }
+
+
+
 @app.get('/favicon.ico', include_in_schema=False)
 def favicon():
     return FileResponse('static/favicon.ico')
+
+
 
 if __name__ == "__main__":
     import uvicorn
