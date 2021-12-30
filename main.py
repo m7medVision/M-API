@@ -1,4 +1,3 @@
-from YouTube_tools import get_last_video_id_by_username
 from src.random_str import get_random_str
 from logging import debug
 from unittest import result
@@ -358,75 +357,6 @@ def google_search_results(query: str, request: Request):
 
 
 
-
-
-@app.get('/api/get_last_videoid_youtube')
-@limiter.limit("14/minute")
-def get_last_videoid_youtube(channel_id: str, request: Request):
-    """
-    This can get last video id from YouTube channel.<br>
-    <pre>
-    :param channel_id: Channel ID<br>
-    :return: JSON<br>
-    </pre>
-    Example:<br>
-    <br>
-    <code>
-    https://server1.majhcc.xyz/api/get_last_videoid_youtube?channel_id=UCfzuZdqkX2-jyNXRDGoOpNA
-    </code>
-    """
-    from src.YouTube_tools import get_last_video_id_by_channel
-    try:
-        video_id = get_last_video_id_by_channel(channel_id)
-        return {
-        'status': 'success',
-        "video_id": video_id
-        }
-    except Exception as e:
-        # send error to webhook
-        data = {
-            'content': f'Get last video from youtube api Error: ***{str(e)}***'
-        }
-        requests.post(WEBHOOKURL, data=data)
-        return {
-        'status': 'error'}
-
-
-
-
-
-@app.get('/api/get_last_videoid_youtube_by_username')
-@limiter.limit("14/minute")
-def get_last_videoid_youtube_by_username(username: str, request: Request):
-    """
-    This can get last video id from YouTube channel.<br>
-    <pre>
-    :param channel_id: Channel ID<br>
-    :return: JSON<br>
-    </pre>
-    Example:<br>
-    <br>
-    <code>
-    https://server1.majhcc.xyz/api/get_last_videoid_youtube?channel_id=UCfzuZdqkX2-jyNXRDGoOpNA
-    </code>
-    """
-    from src.YouTube_tools import get_last_video_id_by_username
-    try:
-        video_id = get_last_video_id_by_username(username)
-        return {
-        'status': 'success',
-        "video_id": video_id
-        }
-    except Exception as e:
-        # send error to webhook
-        data = {
-            'content': f'Get last video from youtube api Error: ***{str(e)}***'
-        }
-        requests.post(WEBHOOKURL, data=data)
-        return {
-        'status': 'error'}
-
-
 @app.get('/api/news/rt')
 def news_rt():
     from src.news.RT import get_news
@@ -696,6 +626,69 @@ def tk_getlastvideoid(request: Request, username: str):
         'status': 'error'
         }
 
+
+@app.get('/api/get_last_videoid_youtube')
+@limiter.limit("14/minute")
+def get_last_videoid_youtube(channel_id: str, request: Request):
+    """
+    This can get last video id from YouTube channel.<br>
+    <pre>
+    :param channel_id: Channel ID<br>
+    :return: JSON<br>
+    </pre>
+    Example:<br>
+    <br>
+    <code>
+    https://server1.majhcc.xyz/api/get_last_videoid_youtube?channel_id=UCfzuZdqkX2-jyNXRDGoOpNA
+    </code>
+    """
+    from YouTube_tools import get_last_video_id_by_channel
+    try:
+        video_id = get_last_video_id_by_channel(channel_id)
+        return {
+        'status': 'success',
+        "video_id": video_id
+        }
+    except Exception as e:
+        # send error to webhook
+        data = {
+            'content': f'Get last video from youtube api Error: ***{str(e)}***'
+        }
+        requests.post(WEBHOOKURL, data=data)
+        return {
+        'status': 'error'}
+
+
+@app.get('/api/get_last_videoid_youtube_by_username')
+@limiter.limit("14/minute")
+def get_last_videoid_youtube_by_username(username: str, request: Request):
+    """
+    This can get last video id from YouTube channel.<br>
+    <pre>
+    :param channel_id: Channel ID<br>
+    :return: JSON<br>
+    </pre>
+    Example:<br>
+    <br>
+    <code>
+    https://server1.majhcc.xyz/api/get_last_videoid_youtube?channel_id=UCfzuZdqkX2-jyNXRDGoOpNA
+    </code>
+    """
+    from src.YouTube_tools import get_last_video_id_by_username 
+    try:
+        video_id = get_last_video_id_by_username(username)
+        return {
+        'status': 'success',
+        "video_id": video_id
+        }
+    except Exception as e:
+        # send error to webhook
+        data = {
+            'content': f'Get last video from youtube api Error: ***{str(e)}***'
+        }
+        requests.post(WEBHOOKURL, data=data)
+        return {
+        'status': 'error'}
 
 
 @app.get('/favicon.ico', include_in_schema=False)

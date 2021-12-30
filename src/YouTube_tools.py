@@ -49,6 +49,7 @@ def get_last_video_id_by_channel(cid):
 
 
 
+
 def get_last_video_id_by_username(username):
     """
     cid = channel id
@@ -79,8 +80,8 @@ def get_last_video_id_by_username(username):
         'VISITOR_INFO1_LIVE': 'usNfcsw0AHg',
         'GPS': '1',
     }
-    cid        = str(username)
-    html       = requests.get('https://www.youtube.com/c/{}/videos'.format(cid), headers=headers, cookies=cookies).text
+    username   = str(username)
+    html       = requests.get('https://www.youtube.com/c/{}/videos'.format(username), headers=headers, cookies=cookies).text
     soup       = BeautifulSoup(html, 'lxml')
     script     = soup.find_all("script")[31]
     m          = re.search('var ytInitialData = (.+)[,;]{1}', str(script)).group(1)
