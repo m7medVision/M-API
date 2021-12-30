@@ -638,7 +638,7 @@ def get_last_videoid_youtube(channel_id: str, request: Request):
     https://server1.majhcc.xyz/api/get_last_videoid_youtube?channel_id=UCfzuZdqkX2-jyNXRDGoOpNA
     </code>
     """
-    from YouTube_tools import get_last_video_id_by_channel
+    from src.YouTube_tools import get_last_video_id_by_channel
     try:
         video_id = get_last_video_id_by_channel(channel_id)
         return {
