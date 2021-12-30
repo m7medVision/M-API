@@ -397,7 +397,7 @@ def get_last_videoid_youtube(channel_id: str, request: Request):
 
 @app.get('/api/get_last_videoid_youtube_by_username')
 @limiter.limit("14/minute")
-def get_last_videoid_youtube(username: str, request: Request):
+def get_last_videoid_youtube_by_username(username: str, request: Request):
     """
     This can get last video id from YouTube channel.<br>
     <pre>
