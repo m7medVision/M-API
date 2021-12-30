@@ -667,7 +667,7 @@ def get_last_videoid_youtube_by_username(username: str, request: Request):
     Example:<br>
     <br>
     <code>
-    https://server1.majhcc.xyz/api/get_last_videoid_youtube?channel_id=hussienahmmed
+    https://server1.majhcc.xyz/api/get_last_videoid_youtube_by_username?username=hussienahmmed
     </code>
     """
     from src.YouTube_tools import get_last_video_id_by_username 
