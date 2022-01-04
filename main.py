@@ -34,7 +34,7 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 @app.get("/", response_class=RedirectResponse)
 def read_root():
-    return RedirectResponse("/docs")
+    return RedirectResponse("https://majhcc.xyz")
 @app.get("/api/yt")
 async def YouTube(url: str):
     """
