@@ -686,7 +686,62 @@ def get_last_videoid_youtube_by_username(username: str, request: Request):
         return {
         'status': 'error'}
 
-
+@app.get('/api/tk/get_user_info')
+@limiter.limit("5/minute")
+def tk_get_user_info(request: Request, username: str):
+    """
+    This API get user info from tiktok<br>
+    <pre>
+    :return: JSON<br>
+    </pre>
+    Example:<br>
+    <br>
+    <code>
+    https://server1.majhcc.xyz/api/tk/get_user_info?username=edsheeran
+    </code>
+    """
+    from src.tiktok_tools import get_account_info
+    try:
+        info = get_account_info(username)
+        return {
+        'status': 'success',
+        'info': info
+        }
+    except Exception as e:
+        data = {
+            'content': f'Get user info from tiktok api Error: ***{str(e)}***'
+        }
+        requests.post(WEBHOOKURL, data=data)
+        return {
+        'status': 'error'}
+@app.get('/api/tk/check_user_exist')
+@limiter.limit("5/minute")
+def tk_check_user_exist(request: Request, username: str):
+    """
+    This API check user exist from tiktok<br>
+    <pre>
+    :return: JSON<br>
+    </pre>
+    Example:<br>
+    <br>
+    <code>
+    https://server1.majhcc.xyz/api/tk/check_user_exist?username=edsheeran
+    </code>
+    """
+    from src.tiktok_tools import check_username
+    try:
+        exist = check_username(username)
+        return {
+        'status': 'success',
+        'available': exist
+        }
+    except Exception as e:
+        data = {
+            'content': f'Check user exist from tiktok api Error: ***{str(e)}***'
+        }
+        requests.post(WEBHOOKURL, data=data)
+        return {
+        'status': 'error'}
 @app.get('/favicon.ico', include_in_schema=False)
 def favicon():
     return FileResponse('static/favicon.ico')
