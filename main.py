@@ -27,7 +27,7 @@ description = """
 
 
 limiter = Limiter(key_func=get_remote_address)
-app = FastAPI(title="MAJHCC's API", description=description, version="0.2.3")
+app = FastAPI(title="MAJHCC's API", description=description, version="0.5.3")
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
@@ -72,7 +72,7 @@ async def TikTok(url: str):
     </code>
     
     """
-    from src.tiktok import getVideo
+    from src.tiktok.tiktok import getVideo
     json = getVideo(url)
     json['dev'] = "@majhcc"
     return json
@@ -602,8 +602,8 @@ def tk_getlastvideoid(request: Request, username: str):
     https://server1.majhcc.xyz/api/tk/getlastvideoid?username=edsheeran
     </code>
     """
-    from src.tiktok_tools import get_last_video_id
-    from src.tiktok import getVideo
+    from src.tiktok.tiktok_tools import get_last_video_id
+    from src.tiktok.tiktok import getVideo
     try:
         id_ = get_last_video_id(username)
         return {
@@ -700,7 +700,7 @@ def tk_get_user_info(request: Request, username: str):
     https://server1.majhcc.xyz/api/tk/get_user_info?username=edsheeran
     </code>
     """
-    from src.tiktok_tools import get_account_info
+    from src.tiktok.tiktok_tools import get_account_info
     try:
         info = get_account_info(username)
         return {
@@ -728,7 +728,7 @@ def tk_check_user_exist(request: Request, username: str):
     https://server1.majhcc.xyz/api/tk/check_user_exist?username=edsheeran
     </code>
     """
-    from src.tiktok_tools import check_username
+    from src.tiktok.tiktok_tools import check_username
     try:
         exist = check_username(username)
         return {
@@ -742,12 +742,22 @@ def tk_check_user_exist(request: Request, username: str):
         requests.post(WEBHOOKURL, data=data)
         return {
         'status': 'error'}
+
+@app.get('/api/tk/full_list_videos_id_by_username')
+@limiter.limit("10/hour")
+def tk_full_list_videos_id_by_username(request: Request, username: str):
+    from src.tiktok.tiktok_tools import GetVideosIdsByUsermane
+    try:
+        ids = GetVideosIdsByUsermane(username)
+        
+        return PlainTextResponse("\n".join(ids), media_type='text/plain')
+    except Exception as e:
+        data = {
+            'content': f'Get full list videos id from tiktok api Error: ***{str(e)}***'
+        }
+        requests.post(WEBHOOKURL, data=data)
+        return {
+        'status': 'error'}
 @app.get('/favicon.ico', include_in_schema=False)
 def favicon():
     return FileResponse('static/favicon.ico')
-
-
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, port=8011, debug=True)
