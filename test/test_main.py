@@ -32,7 +32,7 @@ def test_twitter_downloader_2():
     """This test will check if the twitter downloader is working"""
     response = client.get("/api/tw?url=https://twitter.com/OmanTVGeneral/status/1478376146907668483?s=20")
     assert "title" in response.text
-
+ 
 def test_btc():
     """This test will check if the btc is working"""
     response = client.get("/api/BTC")
