@@ -1,6 +1,13 @@
 from urllib import response
 import pytest
 from fastapi.testclient import TestClient
+import sys
+import os
+  
+
+current = os.path.dirname(os.path.realpath(__file__))
+parent = os.path.dirname(current)
+sys.path.append(parent)
 from main import app
 client = TestClient(app)
 
