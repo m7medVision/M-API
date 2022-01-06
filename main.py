@@ -758,6 +758,55 @@ def tk_full_list_videos_id_by_username(request: Request, username: str):
         requests.post(WEBHOOKURL, data=data)
         return {
         'status': 'error'}
+
+@app.get('/api/email/checker/mailru')
+@limiter.limit("5/minute")
+def email_checker_mailru(request: Request, email: str):
+    """
+    This API check email from mail.ru<br>
+    <pre>
+    :return: JSON<br>
+    </pre>
+    Example:<br>
+    <br>
+    <code>
+    https://server1.majhcc.xyz/api/email/checker/mailru?email=oman4omani@mail.ru
+    """
+    from src.Emails.checker.mailru import checker
+    # regex mail.ru
+    if re.match(r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@mail.ru', email):
+        try:
+            result = checker(email)
+            if result:
+                return {
+                'status': 'success',
+                'available': True
+                }
+            elif not result:
+                return {
+                'status': 'success',
+                'available': False
+                }
+            elif result == None:
+                return {
+                'status': 'error please try again or contact us ==> instagram: @majhcc'
+                }
+            else:
+                return {
+                'status': 'error please try again or contact us ==> instagram: @majhcc'
+                }
+        except Exception as e:
+            data = {
+                'content': f'Check email from mail.ru api Error: ***{str(e)}***'
+            }
+            requests.post(WEBHOOKURL, data=data)
+            return {
+            'status': 'error please try again or contact us ==> instagram: @majhcc'}
+    else:
+        return {
+        'status': 'error',
+        'result': 'Invalid email'
+        } 
 @app.get('/favicon.ico', include_in_schema=False)
 def favicon():
     return FileResponse('static/favicon.ico')

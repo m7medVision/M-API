@@ -102,3 +102,8 @@ def test_get_list_of_video_tiktok():
     """This test will check if the user info tiktok is working"""
     response = client.get("/api/tk/full_list_videos_id_by_username?username=majhc")
     assert response.status_code == 200
+
+def test_mailru_checker():
+    """This test will check if the mailru checker is working"""
+    response = client.get("/api/email/checker/mailru?email=oman4omani%40mail.ru")
+    assert response.json()['status'] == "success"
