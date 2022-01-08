@@ -774,7 +774,7 @@ def email_checker_mailru(request: Request, email: str):
     """
     from src.Emails.checker.mailru import checker
     # regex mail.ru
-    if re.match(r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@mail.ru', email):
+    if re.match(r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]', email):
         try:
             result = checker(email)
             if result:
