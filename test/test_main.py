@@ -105,5 +105,5 @@ def test_get_list_of_video_tiktok():
 
 def test_mailru_checker():
     """This test will check if the mailru checker is working"""
-    response = client.get("/api/email/checker/mailru?email=oman4omani%40mail.ru")
+    response = client.get("/api/email/checker/mailru?email=oman4omani")
     assert response.json()['status'] == "success"
