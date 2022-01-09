@@ -132,7 +132,7 @@ def test_get_list_of_video_tiktok():
     assert response.status_code == 200
 
 
-def test_mailru_checker():
-    """This test will check if the mailru checker is working"""
-    response = client.get("/api/email/checker/mailru?email=oman4omani@mail.ru")
-    assert response.json()['status'] == "success"
+# def test_mailru_checker():
+#     """This test will check if the mailru checker is working"""
+#     response = client.get("/api/email/checker/mailru?email=oman4omani@mail.ru")
+#     assert response.json()['status'] == "success"
