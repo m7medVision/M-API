@@ -135,7 +135,7 @@ async def Twitter_v2(url: str):
         return {"error": "Something went wrong"}
 
 
-@app.get("/api/BTC")
+@app.get("/api/BTC", tags=["crypto"])
 async def btc():
     """
     This give you the current price of Bitcoin.<br>
@@ -160,7 +160,7 @@ async def btc():
         return {"error": "Something went wrong"}
 
 
-@app.get("/api/ETH")
+@app.get("/api/ETH", tags=["crypto"])
 async def eth():
     """
     This give you the current price of Ethereum.<br>
@@ -187,7 +187,7 @@ async def eth():
 
 class postvht(BaseModel):
     url: str
-    s: Optional[str] = get_random_str(5)
+    s: Optional[str] 
 
 
 @app.post("/api/vht")
@@ -207,9 +207,11 @@ async def vht(data: postvht):
     """
     if data.url == None:
         return {"error": "Please enter a URL"}
+    if data.s == None:
+        s = get_random_str(5)
     from src.v_ht import short_url
     try:
-        return short_url(data.url, data.s)
+        return short_url(data.url, s)
     except Exception as e:
         # send to webhook
         data = {
@@ -251,7 +253,7 @@ def fake_address(request: Request):
         return {"error": "Something went wrong"}
 
 
-@app.get('/api/downloader/auto')
+@app.get('/api/downloader/auto', tags=['downloading'])
 def downloader_auto(url: str):
     """
     This can download videos from YouTube, TikTok, Twitter, and other websites.<br>
@@ -349,7 +351,7 @@ def google_search_results(query: str, request: Request):
         return {"error": "Something went wrong"}
 
 
-@app.get('/api/news/rt')
+@app.get('/api/news/rt', tags=['news'])
 def news_rt():
     from src.news.RT import get_news
     try:
@@ -366,7 +368,7 @@ def news_rt():
             'status': 'error'}
 
 
-@app.get('/api/news/bbc')
+@app.get('/api/news/bbc', tags=['news'])
 def news_bbc():
     from src.news.bbc import get_news
     try:
@@ -384,7 +386,7 @@ def news_bbc():
         }
 
 
-@app.get('/api/news/cnn')
+@app.get('/api/news/cnn', tags=['news'])
 def news_cnn():
     from src.news.CNN import get_news
     try:
@@ -420,7 +422,7 @@ def news_fox():
         }
 
 
-@app.get('/api/news/nyt')
+@app.get('/api/news/nyt', tags=['news'])
 def news_nyt():
     from src.news.nyt import get_news
     try:
@@ -438,7 +440,7 @@ def news_nyt():
         }
 
 
-@app.get('/api/yt/dislike')
+@app.get('/api/yt/dislike', tags=['youtube'])
 def yt_dislike(video_id: str):
     from API.youtubedislike import get_dislike
     try:
@@ -456,7 +458,7 @@ def yt_dislike(video_id: str):
         }
 
 
-@app.get('/api/email/checker/google')
+@app.get('/api/email/checker/google', tags=['Emails'])
 @limiter.limit("5/minute")
 def email_checker_google(email: str, request: Request):
     from src.Emails.checker.gmail import create_random_call
@@ -486,7 +488,7 @@ def email_checker_google(email: str, request: Request):
         }
 
 
-@app.get('/api/email/checker/microsoft')
+@app.get('/api/email/checker/microsoft', tags=['Emails'])
 @limiter.limit("5/minute")
 def email_checker_microsoft(email: str, request: Request):
     from src.Emails.checker.hotmail import hotmail
