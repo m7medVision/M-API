@@ -10,8 +10,6 @@ import requests
 import re
 
 
-
-
 WEBHOOKURL = 'https://discord.com/api/webhooks/925364942511673354/uAGAVzxxLSQnM-VB3vJY2F9m8pAH2mUfANW0g86KO52h5PdmdVkgWtV9NtTKRuHJv0No'
 
 
@@ -35,6 +33,8 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 @app.get("/", response_class=RedirectResponse)
 def read_root():
     return RedirectResponse("https://majhcc.xyz")
+
+
 @app.get("/api/yt")
 async def YouTube(url: str):
     """
@@ -56,6 +56,7 @@ async def YouTube(url: str):
     from src.youtube import download_youtube_video
     return download_youtube_video(url)
 
+
 @app.get("/api/tk")
 async def TikTok(url: str):
     """
@@ -70,12 +71,13 @@ async def TikTok(url: str):
     <code>
     https://server1.majhcc.xyz/api/tk?url=https://www.tiktok.com/@billieeilish/video/7014570556607433990
     </code>
-    
+
     """
     from src.tiktok.tiktok import getVideo
     json = getVideo(url)
     json['dev'] = "@majhcc"
     return json
+
 
 @app.get("/api/twitter")
 async def twitter(url: str):
@@ -101,6 +103,8 @@ async def twitter(url: str):
         }
         requests.post(WEBHOOKURL, data=data)
         return {"error": "Something went wrong"}
+
+
 @app.get("/api/tw")
 async def Twitter_v2(url: str):
     """
@@ -129,6 +133,8 @@ async def Twitter_v2(url: str):
         }
         requests.post(WEBHOOKURL, data=data)
         return {"error": "Something went wrong"}
+
+
 @app.get("/api/BTC")
 async def btc():
     """
@@ -152,7 +158,6 @@ async def btc():
         }
         requests.post(WEBHOOKURL, data=data)
         return {"error": "Something went wrong"}
-
 
 
 @app.get("/api/ETH")
@@ -181,12 +186,12 @@ async def eth():
 
 
 class postvht(BaseModel):
-    url : str
-    s : Optional[str] = get_random_str(5)
+    url: str
+    s: Optional[str] = get_random_str(5)
 
 
 @app.post("/api/vht")
-async def vht(data : postvht):
+async def vht(data: postvht):
     """
     This can shorten your URL using v.ht servise.<br>
     <pre>
@@ -204,7 +209,7 @@ async def vht(data : postvht):
         return {"error": "Please enter a URL"}
     from src.v_ht import short_url
     try:
-        return short_url(data.url , data.s)
+        return short_url(data.url, data.s)
     except Exception as e:
         # send to webhook
         data = {
@@ -212,7 +217,6 @@ async def vht(data : postvht):
         }
         requests.post(WEBHOOKURL, data=data)
         return {"error": "Something went wrong"}
-
 
 
 @app.get("/api/ip")
@@ -225,12 +229,9 @@ def ip(request: Request):
     """
     client_host = request.client.host
     return {"ip": client_host}
+
+
 @app.get("/api/fake-address")
-
-
-
-
-
 def fake_address(request: Request):
     """
     This returns fake address.<br>
@@ -248,7 +249,6 @@ def fake_address(request: Request):
         }
         requests.post(WEBHOOKURL, data=data)
         return {"error": "Something went wrong"}
-
 
 
 @app.get('/api/downloader/auto')
@@ -291,7 +291,6 @@ def downloader_auto(url: str):
         return {"error": "Something went wrong"}
 
 
-
 @app.get('/api/caller-id')
 @limiter.limit("5/minute")
 def caller_id(number, country_code, request: Request):
@@ -320,8 +319,6 @@ def caller_id(number, country_code, request: Request):
         return {"error": "Something went wrong"}
 
 
-
-
 @app.get('/api/google_search_results')
 @limiter.limit("15/minute")
 def google_search_results(query: str, request: Request):
@@ -342,7 +339,7 @@ def google_search_results(query: str, request: Request):
         return {
             'status': 'success',
             'results': get_google_results(query)
-            }
+        }
     except Exception as e:
         # send to webhook
         data = {
@@ -352,7 +349,6 @@ def google_search_results(query: str, request: Request):
         return {"error": "Something went wrong"}
 
 
-
 @app.get('/api/news/rt')
 def news_rt():
     from src.news.RT import get_news
@@ -360,15 +356,14 @@ def news_rt():
         return {
             'status': 'success',
             'news': get_news()
-            }
+        }
     except Exception as e:
         data = {
             'content': f'Get news from RT api Error: ***{str(e)}***'
         }
         requests.post(WEBHOOKURL, data=data)
         return {
-        'status': 'error'}
-
+            'status': 'error'}
 
 
 @app.get('/api/news/bbc')
@@ -378,16 +373,15 @@ def news_bbc():
         return {
             'status': 'success',
             'news': get_news()
-            }
+        }
     except Exception as e:
         data = {
             'content': f'Get news from BBC api Error: ***{str(e)}***'
         }
         requests.post(WEBHOOKURL, data=data)
         return {
-        'status': 'error'
+            'status': 'error'
         }
-
 
 
 @app.get('/api/news/cnn')
@@ -397,16 +391,15 @@ def news_cnn():
         return {
             'status': 'success',
             'news': get_news()
-            }
+        }
     except Exception as e:
         data = {
             'content': f'Get news from CNN api Error: ***{str(e)}***'
         }
         requests.post(WEBHOOKURL, data=data)
         return {
-        'status': 'error'
+            'status': 'error'
         }
-
 
 
 @app.get('/api/news/fox')
@@ -416,16 +409,15 @@ def news_fox():
         return {
             'status': 'success',
             'news': get_news()
-            }
+        }
     except Exception as e:
         data = {
             'content': f'Get news from FOX api Error: ***{str(e)}***'
         }
         requests.post(WEBHOOKURL, data=data)
         return {
-        'status': 'error'
+            'status': 'error'
         }
-
 
 
 @app.get('/api/news/nyt')
@@ -435,16 +427,15 @@ def news_nyt():
         return {
             'status': 'success',
             'news': get_news()
-            }
+        }
     except Exception as e:
         data = {
             'content': f'Get news from NYT api Error: ***{str(e)}***'
         }
         requests.post(WEBHOOKURL, data=data)
         return {
-        'status': 'error'
+            'status': 'error'
         }
-
 
 
 @app.get('/api/yt/dislike')
@@ -454,16 +445,15 @@ def yt_dislike(video_id: str):
         return {
             'status': 'success',
             'dislike': get_dislike(video_id)
-            }
+        }
     except Exception as e:
         data = {
             'content': f'Get dislike from youtube api Error: ***{str(e)}***'
         }
         requests.post(WEBHOOKURL, data=data)
         return {
-        'status': 'error'
+            'status': 'error'
         }
-
 
 
 @app.get('/api/email/checker/google')
@@ -476,25 +466,24 @@ def email_checker_google(email: str, request: Request):
             return {
                 'status': 'success',
                 'result': 'Email is valid'
-                }
+            }
         elif result == False:
             return {
                 'status': 'success',
                 'result': 'Email is invalid'
-                }
+            }
         else:
             return {
                 'status': 'error'
-                }
+            }
     except Exception as e:
         data = {
             'content': f'Get email checker from google api Error: ***{str(e)}***'
         }
         requests.post(WEBHOOKURL, data=data)
         return {
-        'status': 'error'
+            'status': 'error'
         }
-
 
 
 @app.get('/api/email/checker/microsoft')
@@ -507,26 +496,24 @@ def email_checker_microsoft(email: str, request: Request):
             return {
                 'status': 'success',
                 'result': 'Email is valid'
-                }
+            }
         elif result == False:
             return {
                 'status': 'success',
                 'result': 'Email is invalid'
-                }
+            }
         else:
             return {
                 'status': 'error'
-                }
+            }
     except Exception as e:
         data = {
             'content': f'Get email checker from microsoft api Error: ***{str(e)}***'
         }
         requests.post(WEBHOOKURL, data=data)
         return {
-        'status': 'error'
+            'status': 'error'
         }
-
-
 
 
 @app.get('/api/proxy/scrape/free-proxy-list')
@@ -553,10 +540,8 @@ def proxy_scrape_free_proxy_list(request: Request):
         }
         requests.post(WEBHOOKURL, data=data)
         return {
-        'status': 'error'
+            'status': 'error'
         }
-
-
 
 
 @app.get('/api/proxy/scrape/freeproxylistsnet')
@@ -583,9 +568,8 @@ def proxy_scrape_freeproxylistsnet(request: Request):
         }
         requests.post(WEBHOOKURL, data=data)
         return {
-        'status': 'error'
+            'status': 'error'
         }
-
 
 
 @app.get('/api/tk/getlastvideoid')
@@ -612,14 +596,14 @@ def tk_getlastvideoid(request: Request, username: str):
             'tiktok_url': f'https://www.tiktok.com/@{username}/video/{id_}',
             'download_url': getVideo(f'https://www.tiktok.com/@{username}/video/{id_}')['link']
 
-            }
+        }
     except Exception as e:
         data = {
             'content': f'Get last video id from youtube api Error: ***{str(e)}***'
         }
         requests.post(WEBHOOKURL, data=data)
         return {
-        'status': 'error'
+            'status': 'error'
         }
 
 
@@ -642,8 +626,8 @@ def get_last_videoid_youtube(channel_id: str, request: Request):
     try:
         video_id = get_last_video_id_by_channel(channel_id)
         return {
-        'status': 'success',
-        "video_id": video_id
+            'status': 'success',
+            "video_id": video_id
         }
     except Exception as e:
         # send error to webhook
@@ -652,7 +636,7 @@ def get_last_videoid_youtube(channel_id: str, request: Request):
         }
         requests.post(WEBHOOKURL, data=data)
         return {
-        'status': 'error'}
+            'status': 'error'}
 
 
 @app.get('/api/get_last_videoid_youtube_by_username')
@@ -670,12 +654,12 @@ def get_last_videoid_youtube_by_username(username: str, request: Request):
     https://server1.majhcc.xyz/api/get_last_videoid_youtube_by_username?username=hussienahmmed
     </code>
     """
-    from src.YouTube_tools import get_last_video_id_by_username 
+    from src.YouTube_tools import get_last_video_id_by_username
     try:
         video_id = get_last_video_id_by_username(username)
         return {
-        'status': 'success',
-        "video_id": video_id
+            'status': 'success',
+            "video_id": video_id
         }
     except Exception as e:
         # send error to webhook
@@ -684,7 +668,8 @@ def get_last_videoid_youtube_by_username(username: str, request: Request):
         }
         requests.post(WEBHOOKURL, data=data)
         return {
-        'status': 'error'}
+            'status': 'error'}
+
 
 @app.get('/api/tk/get_user_info')
 @limiter.limit("5/minute")
@@ -704,8 +689,8 @@ def tk_get_user_info(request: Request, username: str):
     try:
         info = get_account_info(username)
         return {
-        'status': 'success',
-        'info': info
+            'status': 'success',
+            'info': info
         }
     except Exception as e:
         data = {
@@ -713,7 +698,9 @@ def tk_get_user_info(request: Request, username: str):
         }
         requests.post(WEBHOOKURL, data=data)
         return {
-        'status': 'error'}
+            'status': 'error'}
+
+
 @app.get('/api/tk/check_user_exist')
 @limiter.limit("5/minute")
 def tk_check_user_exist(request: Request, username: str):
@@ -732,8 +719,8 @@ def tk_check_user_exist(request: Request, username: str):
     try:
         exist = check_username(username)
         return {
-        'status': 'success',
-        'available': exist
+            'status': 'success',
+            'available': exist
         }
     except Exception as e:
         data = {
@@ -741,7 +728,8 @@ def tk_check_user_exist(request: Request, username: str):
         }
         requests.post(WEBHOOKURL, data=data)
         return {
-        'status': 'error'}
+            'status': 'error'}
+
 
 @app.get('/api/tk/full_list_videos_id_by_username')
 @limiter.limit("10/hour")
@@ -749,7 +737,7 @@ def tk_full_list_videos_id_by_username(request: Request, username: str):
     from src.tiktok.tiktok_tools import GetVideosIdsByUsermane
     try:
         ids = GetVideosIdsByUsermane(username)
-        
+
         return PlainTextResponse("\n".join(ids), media_type='text/plain')
     except Exception as e:
         data = {
@@ -757,7 +745,8 @@ def tk_full_list_videos_id_by_username(request: Request, username: str):
         }
         requests.post(WEBHOOKURL, data=data)
         return {
-        'status': 'error'}
+            'status': 'error'}
+
 
 @app.get('/api/email/checker/mailru')
 @limiter.limit("5/minute")
@@ -779,21 +768,21 @@ def email_checker_mailru(request: Request, email: str):
             result = checker(email)
             if result:
                 return {
-                'status': 'success',
-                'available': True
+                    'status': 'success',
+                    'available': True
                 }
             elif not result:
                 return {
-                'status': 'success',
-                'available': False
+                    'status': 'success',
+                    'available': False
                 }
             elif result == None:
                 return {
-                'status': 'error please try again or contact us ==> instagram: @majhcc'
+                    'status': 'error please try again or contact us ==> instagram: @majhcc'
                 }
             else:
                 return {
-                'status': 'error please try again or contact us ==> instagram: @majhcc'
+                    'status': 'error please try again or contact us ==> instagram: @majhcc'
                 }
         except Exception as e:
             data = {
@@ -801,12 +790,14 @@ def email_checker_mailru(request: Request, email: str):
             }
             requests.post(WEBHOOKURL, data=data)
             return {
-            'status': 'error please try again or contact us ==> instagram: @majhcc'}
+                'status': 'error please try again or contact us ==> instagram: @majhcc'}
     else:
         return {
-        'status': 'error',
-        'result': 'Invalid email'
-        } 
+            'status': 'error',
+            'result': 'Invalid email'
+        }
+
+
 @app.get('/favicon.ico', include_in_schema=False)
 def favicon():
     return FileResponse('static/favicon.ico')
