@@ -5,6 +5,11 @@ import requests
 import re
 from bs4 import BeautifulSoup
 import json
+import re
+import time
+from time import gmtime
+
+
 
 
 def get_last_video_id_by_channel(cid):
@@ -30,24 +35,24 @@ def get_last_video_id_by_channel(cid):
         'accept-language': 'en-US,en;q=0.9',
         'cookie': 'YSC=FV4EgoS5wJE; PREF=tz=Asia.Dubai; CONSENT=YES+yt.417698365.en+FX+925; VISITOR_INFO1_LIVE=usNfcsw0AHg; GPS=1',
     }
-    cookies= {
+    cookies = {
         'YSC': 'FV4EgoS5wJE',
         'PREF': 'tz=Asia.Dubai',
         'CONSENT': 'YES+yt.417698365.en+FX+925',
         'VISITOR_INFO1_LIVE': 'usNfcsw0AHg',
         'GPS': '1',
     }
-    cid        = str(cid)
-    html       = requests.get('https://www.youtube.com/channel/{}/videos'.format(cid), headers=headers, cookies=cookies).text
-    soup       = BeautifulSoup(html, 'lxml')
-    script     = soup.find_all("script")[31]
-    m          = re.search('var ytInitialData = (.+)[,;]{1}', str(script)).group(1)
-    json_m     = json.loads(m)
-    last_video = json_m['contents']['twoColumnBrowseResultsRenderer']['tabs'][1]['tabRenderer']['content']['sectionListRenderer']['contents'][0]['itemSectionRenderer']['contents'][0]['gridRenderer']['items'][0]['gridVideoRenderer']['videoId']
-   
+    cid = str(cid)
+    html = requests.get('https://www.youtube.com/channel/{}/videos'.format(cid),
+                        headers=headers, cookies=cookies).text
+    soup = BeautifulSoup(html, 'lxml')
+    script = soup.find_all("script")[31]
+    m = re.search('var ytInitialData = (.+)[,;]{1}', str(script)).group(1)
+    json_m = json.loads(m)
+    last_video = json_m['contents']['twoColumnBrowseResultsRenderer']['tabs'][1]['tabRenderer']['content']['sectionListRenderer'][
+        'contents'][0]['itemSectionRenderer']['contents'][0]['gridRenderer']['items'][0]['gridVideoRenderer']['videoId']
+
     return last_video
-
-
 
 
 def get_last_video_id_by_username(username):
@@ -71,21 +76,18 @@ def get_last_video_id_by_username(username):
         'sec-fetch-dest': 'document',
         'referer': 'https://www.youtube.com/',
         'accept-language': 'en-US,en;q=0.9',
-        'cookie': 'YSC=FV4EgoS5wJE; PREF=tz=Asia.Dubai; CONSENT=YES+yt.417698365.en+FX+925; VISITOR_INFO1_LIVE=usNfcsw0AHg; GPS=1',
     }
-    cookies= {
-        'YSC': 'FV4EgoS5wJE',
-        'PREF': 'tz=Asia.Dubai',
-        'CONSENT': 'YES+yt.417698365.en+FX+925',
-        'VISITOR_INFO1_LIVE': 'usNfcsw0AHg',
-        'GPS': '1',
-    }
-    username   = str(username)
-    html       = requests.get('https://www.youtube.com/c/{}/videos'.format(username), headers=headers, cookies=cookies).text
-    soup       = BeautifulSoup(html, 'lxml')
-    script     = soup.find_all("script")[31]
-    m          = re.search('var ytInitialData = (.+)[,;]{1}', str(script)).group(1)
-    json_m     = json.loads(m)
-    last_video = json_m['contents']['twoColumnBrowseResultsRenderer']['tabs'][1]['tabRenderer']['content']['sectionListRenderer']['contents'][0]['itemSectionRenderer']['contents'][0]['gridRenderer']['items'][0]['gridVideoRenderer']['videoId']
-   
+    username = str(username)
+    html = requests.get('https://www.youtube.com/c/{}/videos'.format(username),
+                        headers=headers).text
+    soup = BeautifulSoup(html, 'lxml')
+    script = soup.find_all("script")[31]
+    m = re.search('var ytInitialData = (.+)[,;]{1}', str(script)).group(1)
+    json_m = json.loads(m)
+    last_video = json_m['contents']['twoColumnBrowseResultsRenderer']['tabs'][1]['tabRenderer']['content']['sectionListRenderer'][
+        'contents'][0]['itemSectionRenderer']['contents'][0]['gridRenderer']['items'][0]['gridVideoRenderer']['videoId']
+
     return last_video
+
+
+print(get_last_video_id_by_username("majhcc"))

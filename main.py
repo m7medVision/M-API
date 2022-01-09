@@ -516,7 +516,7 @@ def email_checker_microsoft(email: str, request: Request):
         }
 
 
-@app.get('/api/proxy/scrape/free-proxy-list')
+@app.get('/api/proxy/scrape/free-proxy-list', tags=['proxy'])
 @limiter.limit("5/minute")
 def proxy_scrape_free_proxy_list(request: Request):
     """
@@ -544,7 +544,7 @@ def proxy_scrape_free_proxy_list(request: Request):
         }
 
 
-@app.get('/api/proxy/scrape/freeproxylistsnet')
+@app.get('/api/proxy/scrape/freeproxylistsnet', tags=['proxy'])
 @limiter.limit("5/minute")
 def proxy_scrape_freeproxylistsnet(request: Request):
     """
@@ -572,7 +572,7 @@ def proxy_scrape_freeproxylistsnet(request: Request):
         }
 
 
-@app.get('/api/tk/getlastvideoid')
+@app.get('/api/tk/getlastvideoid', tags=['tiktok'])
 @limiter.limit("5/minute")
 def tk_getlastvideoid(request: Request, username: str):
     """
@@ -607,7 +607,7 @@ def tk_getlastvideoid(request: Request, username: str):
         }
 
 
-@app.get('/api/get_last_videoid_youtube')
+@app.get('/api/get_last_videoid_youtube', tags=['youtube'])
 @limiter.limit("14/minute")
 def get_last_videoid_youtube(channel_id: str, request: Request):
     """
@@ -622,24 +622,25 @@ def get_last_videoid_youtube(channel_id: str, request: Request):
     https://server1.majhcc.xyz/api/get_last_videoid_youtube?channel_id=UCfzuZdqkX2-jyNXRDGoOpNA
     </code>
     """
-    from src.YouTube_tools import get_last_video_id_by_channel
-    try:
-        video_id = get_last_video_id_by_channel(channel_id)
-        return {
-            'status': 'success',
-            "video_id": video_id
-        }
-    except Exception as e:
-        # send error to webhook
-        data = {
-            'content': f'Get last video from youtube api Error: ***{str(e)}***'
-        }
-        requests.post(WEBHOOKURL, data=data)
-        return {
-            'status': 'error'}
+    return {"status": "This service is not available now"}
+    # from src.YouTube_tools import get_last_video_id_by_channel
+    # try:
+    #     video_id = get_last_video_id_by_channel(channel_id)
+    #     return {
+    #         'status': 'success',
+    #         "video_id": video_id
+    #     }
+    # except Exception as e:
+    #     # send error to webhook
+    #     data = {
+    #         'content': f'Get last video from youtube api Error: ***{str(e)}***'
+    #     }
+    #     requests.post(WEBHOOKURL, data=data)
+    #     return {
+    #         'status': 'error'}
 
 
-@app.get('/api/get_last_videoid_youtube_by_username')
+@app.get('/api/get_last_videoid_youtube_by_username', tags=['youtube'])
 @limiter.limit("14/minute")
 def get_last_videoid_youtube_by_username(username: str, request: Request):
     """
@@ -654,21 +655,22 @@ def get_last_videoid_youtube_by_username(username: str, request: Request):
     https://server1.majhcc.xyz/api/get_last_videoid_youtube_by_username?username=hussienahmmed
     </code>
     """
-    from src.YouTube_tools import get_last_video_id_by_username
-    try:
-        video_id = get_last_video_id_by_username(username)
-        return {
-            'status': 'success',
-            "video_id": video_id
-        }
-    except Exception as e:
-        # send error to webhook
-        data = {
-            'content': f'Get last video from youtube api Error: ***{str(e)}***'
-        }
-        requests.post(WEBHOOKURL, data=data)
-        return {
-            'status': 'error'}
+    return {"status": "This service is not available now"}
+    # from src.YouTube_tools import get_last_video_id_by_username
+    # try:
+    #     video_id = get_last_video_id_by_username(username)
+    #     return {
+    #         'status': 'success',
+    #         "video_id": video_id
+    #     }
+    # except Exception as e:
+    #     # send error to webhook
+    #     data = {
+    #         'content': f'Get last video from youtube api Error: ***{str(e)}***'
+    #     }
+    #     requests.post(WEBHOOKURL, data=data)
+    #     return {
+    #         'status': 'error'}
 
 
 @app.get('/api/tk/get_user_info')
