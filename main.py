@@ -35,7 +35,7 @@ def read_root():
     return RedirectResponse("https://majhcc.xyz")
 
 
-@app.get("/api/yt")
+@app.get("/api/yt", tags=['downloading'])
 async def YouTube(url: str):
     """
     This can download videos from YouTube.<br>
@@ -57,7 +57,7 @@ async def YouTube(url: str):
     return download_youtube_video(url)
 
 
-@app.get("/api/tk")
+@app.get("/api/tk", tags=['downloading'])
 async def TikTok(url: str):
     """
     This can download videos from TikTok.<br>
@@ -79,7 +79,7 @@ async def TikTok(url: str):
     return json
 
 
-@app.get("/api/twitter")
+@app.get("/api/twitter", tags=['downloading'])
 async def twitter(url: str):
     """
     This can download videos from Twitter.<br>
@@ -105,7 +105,7 @@ async def twitter(url: str):
         return {"error": "Something went wrong"}
 
 
-@app.get("/api/tw")
+@app.get("/api/tw", tags=['downloading'])
 async def Twitter_v2(url: str):
     """
     This also can download videos from Twitter but it's faster than Twitter v1.<br>
