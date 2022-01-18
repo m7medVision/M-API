@@ -163,7 +163,7 @@ async def btc():
 @app.get("/api/ETH", tags=["crypto"])
 async def eth():
     """
-    This give you the current price of Ethereum.<br>
+     This give you the current price of Ethereum.<br>
     <pre>
     :return: RAW<br>
     </pre>
