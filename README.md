@@ -1,4 +1,4 @@
-# This is MAJHCC's(Mohammed Aljahawri) API helps you to do some cool stuffs.
+# This is M-API helps you to do some cool stuffs.
 
 [-] This API is still under development.<br>
 [+] This API is working perfectly.<br>
