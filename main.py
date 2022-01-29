@@ -800,7 +800,10 @@ def email_checker_mailru(request: Request, email: str):
             'status': 'error',
             'result': 'Invalid email'
         }
-
+@app.get('/api/meaning/ar')
+def ar_meaning(name: str):
+    from src.names.meaning.ar.main import get_meaing
+    return get_meaing(name)
 
 @app.get('/favicon.ico', include_in_schema=False)
 def favicon():

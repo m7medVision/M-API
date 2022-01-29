@@ -136,3 +136,9 @@ def test_get_list_of_video_tiktok():
 #     """This test will check if the mailru checker is working"""
 #     response = client.get("/api/email/checker/mailru?email=oman4omani@mail.ru")
 #     assert response.json()['status'] == "success"
+
+
+def test_names_meaning():
+    """this tes wihll check if the name meaning is working"""
+    response = client.get("/api/meaning/ar?name=محمد")
+    assert response.json()['status'] == True
