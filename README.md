@@ -1,5 +1,9 @@
 # This is MAJHCC's(Mohammed Aljahawri) API helps you to do some cool stuffs.
-
+<img src="https://github.com/majhcc/M-API/workflows/Testing/badge.svg">
+<img src="https://img.shields.io/github/issues/majhcc/m-api">
+<img src="https://img.shields.io/github/last-commit/majhcc/m-api">
+<img src="https://tokei.rs/b1/github/majhcc/m-api">
+<br>
 [-] This API is still under development.<br>
 [+] This API is working perfectly.<br>
 [+] This API is Fast and Simple.<br>
