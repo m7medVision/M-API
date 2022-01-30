@@ -8,11 +8,9 @@ from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 import requests
 import re
+import os
 
-
-WEBHOOKURL = 'https://discord.com/api/webhooks/925364942511673354/uAGAVzxxLSQnM-VB3vJY2F9m8pAH2mUfANW0g86KO52h5PdmdVkgWtV9NtTKRuHJv0No'
-
-
+WEBHOOKURL = os.environ.get('WEBHOOKURL')
 description = """
 # This is MAJHCC's  (Mohammed Aljahawri)   API helps you to do some cool stuffs.
 <br>
@@ -805,6 +803,53 @@ def ar_meaning(name: str):
     from src.names.meaning.ar.main import get_meaing
     return get_meaing(name)
 
+@app.get('/api/scraping/imgs')
+def imge(url: str):
+    try:
+        # regex url
+        if re.match(r'^(http|https)://', url):
+            from src.scraping.images import main
+            return {
+                'status': 'ok',
+                'result': main(url)
+            }
+        else:
+            return {
+                'status': 'error',
+                'result': 'Invalid url'
+            }
+    except Exception as e:
+            data = {
+                'content': f'Check email from /api/scraping/imgs api Error: ***{str(e)}***'
+            }
+            requests.post(WEBHOOKURL, data=data)
+            return {
+                'status': 'error please try again or contact us ==> instagram: @majhcc'
+                }
+        
+@app.get('/api/scraping/urls')
+def imge(url: str):
+    try:
+        if re.match(r'^(http|https)://', url):
+            from src.scraping.links import main
+            return {
+                'status': 'ok',
+                'result': main(url)
+            }
+        else:
+            return {
+                'status': 'error',
+                'result': 'Invalid url'
+            }
+    except Exception as e:
+            data = {
+                'content': f'Check email from /api/scraping/urls api Error: ***{str(e)}***'
+            }
+            requests.post(WEBHOOKURL, data=data)
+            return {
+                'status': 'error please try again or contact us ==> instagram: @majhcc'
+                }
+        
 @app.get('/favicon.ico', include_in_schema=False)
 def favicon():
     return FileResponse('static/favicon.ico')
