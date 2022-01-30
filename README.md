@@ -1,8 +1,8 @@
-<img src="https://github.com/majhcc/M-API/workflows/Testing/badge.svg">
-<img src="https://img.shields.io/github/issues/majhcc/m-api">
-<img src="https://img.shields.io/github/last-commit/majhcc/m-api">
-<img src="https://tokei.rs/b1/github/majhcc/m-api">
-<img src="https://img.shields.io/github/license/majhcc/m-api">
+<img src="https://github.com/majhcc/M-API/workflows/Testing/badge.svg">&nbsp;
+<img src="https://img.shields.io/github/issues/majhcc/m-api">&nbsp;
+<img src="https://img.shields.io/github/last-commit/majhcc/m-api">&nbsp;
+<img src="https://tokei.rs/b1/github/majhcc/m-api">&nbsp;
+<img src="https://img.shields.io/github/license/majhcc/m-api">&nbsp;
 # This is MAJHCC's(Mohammed Aljahawri) API helps you to do some cool stuffs.
 
 ## This is M-API helps you to do some cool stuffs.
