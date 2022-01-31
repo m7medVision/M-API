@@ -849,7 +849,10 @@ def imge(url: str):
             return {
                 'status': 'error please try again or contact us ==> instagram: @majhcc'
                 }
-        
+@app.get('/api/snapchat')
+def snapchat(username: str):
+    from src.Snapchat.downloader import main
+    return main(username)
 @app.get('/favicon.ico', include_in_schema=False)
 def favicon():
     return FileResponse('static/favicon.ico')
