@@ -808,7 +808,7 @@ def imge(url: str):
     try:
         # regex url
         if re.match(r'^(http|https)://', url):
-            from src.scraping.images import main
+            from src.scraping.img import main
             return {
                 'status': 'ok',
                 'result': main(url)
@@ -831,7 +831,7 @@ def imge(url: str):
 def imge(url: str):
     try:
         if re.match(r'^(http|https)://', url):
-            from src.scraping.links import main
+            from src.scraping.link import main
             return {
                 'status': 'ok',
                 'result': main(url)
