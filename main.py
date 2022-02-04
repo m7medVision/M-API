@@ -251,44 +251,9 @@ def fake_address(request: Request):
         return {"error": "Something went wrong"}
 
 
-@app.get('/api/downloader/auto', tags=['downloading'])
-def downloader_auto(url: str):
-    """
-    This can download videos from YouTube, TikTok, Twitter, and other websites.<br>
-    <pre>
-    :param url: URL<br>
-    :return: JSON<br>
-    </pre>
-    Example:<br>
-    <br>
-    <code>
-    https://server1.majhcc.xyz/api/downloader/auto?url=https://www.youtube.com/watch?v=dQw4w9WgXcQ
-    </code>
-    """
-    # regex youtube url
-    try:
-        if re.match(r'(https?://)?(www\.)?(youtube\.com|youtu\.?be)/.+', url):
-            from src.youtube import download_youtube_video
-            return download_youtube_video(url)
-        # regex tiktok url
-        elif re.match(r'(https?://)?(www\.)?(tiktok\.com|tiktok\.net)/.+', url):
-            from src.tiktok import getVideo
-            json = getVideo(url)
-            json['dev'] = "@majhcc"
-            return json
-        # regex twitter url
-        elif re.match(r'(https?://)?(www\.)?(twitter\.com|twitter\.net)/.+', url):
-            from src.twitter import download_twitter_video
-            return download_twitter_video(url)
-        else:
-            return {"error": "sorry this site is not available now please try to contact the developer @majhcc"}
-    except Exception as e:
-        # send to webhook
-        data = {
-            "content": f"***{e}***"
-        }
-        requests.post(WEBHOOKURL, data=data)
-        return {"error": "Something went wrong"}
+
+
+            
 
 
 @app.get('/api/caller-id')
