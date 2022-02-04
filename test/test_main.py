@@ -66,11 +66,6 @@ def test_fake_add():
     assert response.status_code == 200
 
 
-def test_auto():
-    """This test will check if the auto downloader is working"""
-    response = client.get(
-        "/api/downloader/auto?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Duc6vV8o_aAU")
-    assert response.json()['status'] == "ok"
 
 
 def test_caller_id():
