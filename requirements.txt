@@ -3,7 +3,7 @@ uvicorn==0.15.0
 youtube_dl==2021.6.6
 pydantic==1.8.2
 requests==2.26.0
-pytube
+git+https://github.com/pytube/pytube
 beautifulsoup4==4.10.0
 fastapi==0.70.1
 slowapi
