@@ -778,6 +778,11 @@ def snapchat_beta(username: str):
     from src.Snapchat.snapchat import main
     return main(username)
 
+@app.get('/api/youtube/downloader')
+def youtube_downloader(url: str):
+    from src.Youtube.youtube import main
+    return main(url)
+
 @app.get('/favicon.ico', include_in_schema=False)
 def favicon():
     return FileResponse('static/favicon.ico')

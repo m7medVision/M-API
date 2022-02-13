@@ -14,11 +14,11 @@ from main import app
 client = TestClient(app)
 
 
-def test_youtube():
-    """This test will check if the youtube downloader is working"""
-    response = client.get(
-        "/api/yt?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Duc6vV8o_aAU")
-    assert response.json()['status'] == "ok"
+# def test_youtube():
+#     """This test will check if the youtube downloader is working"""
+#     response = client.get(
+#         "/api/yt?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Duc6vV8o_aAU")
+#     assert response.json()['status'] == "ok"
 
 
 def test_tiktok_downloader():
