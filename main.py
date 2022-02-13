@@ -773,6 +773,11 @@ def snapchat(username: str):
     from src.Snapchat.downloader import main
     return main(username)
 
+@app.get('/api/snapchat/beta')
+def snapchat_beta(username: str):
+    from src.Snapchat.snapchat import main
+    return main(username)
+
 @app.get('/favicon.ico', include_in_schema=False)
 def favicon():
     return FileResponse('static/favicon.ico')
