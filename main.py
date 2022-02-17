@@ -12,7 +12,7 @@ import os
 
 WEBHOOKURL = os.environ.get('WEBHOOKURL')
 description = """
-# This is MAJHCC's  (Mohammed Aljahawri)   API helps you to do some cool stuffs.
+# This is M-API helps you to do some cool stuffs.
 <br>
 [-] This API is still under development.<br>
 [+] This API is working perfectly.<br>
