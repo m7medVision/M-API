@@ -9,6 +9,14 @@ from slowapi.errors import RateLimitExceeded
 import requests
 import re
 import os
+from fastapi.middleware.cors import CORSMiddleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 WEBHOOKURL = os.environ.get('WEBHOOKURL')
 description = """
