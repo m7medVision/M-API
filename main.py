@@ -10,13 +10,6 @@ import requests
 import re
 import os
 from fastapi.middleware.cors import CORSMiddleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 WEBHOOKURL = os.environ.get('WEBHOOKURL')
 description = """
@@ -34,6 +27,13 @@ limiter = Limiter(key_func=get_remote_address)
 app = FastAPI(title="MAJHCC's API", description=description, version="0.5.3")
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/", response_class=RedirectResponse)
