@@ -38,29 +38,9 @@ app.add_middleware(
 
 @app.get("/", response_class=RedirectResponse)
 def read_root():
-    return RedirectResponse("https://majhcc.xyz")
+    return RedirectResponse("https://محمد-الجهوري.شبكة")
 
 
-@app.get("/api/yt", tags=['downloading'])
-async def YouTube(url: str):
-    """
-    This can download videos from YouTube.<br>
-    and it can also download audio from YouTube.<br>
-    and it can also give you title and thumbnail of video from YouTube.<br>
-    <pre>
-    :param url: YouTube URL<br>
-    :return: JSON <br>
-    </pre>
-    Example:<br>
-    <br>
-    <code>
-    https://server1.majhcc.xyz/api/yt?url=https://www.youtube.com/watch?v=dQw4w9WgXcQ
-    </code>
-
-
-    """
-    from src.youtube import download_youtube_video
-    return download_youtube_video(url)
 
 
 @app.get("/api/tk", tags=['downloading'])
@@ -193,7 +173,7 @@ async def eth():
 
 class postvht(BaseModel):
     url: str
-    s: Optional[str] 
+    s: Optional[str]
 
 
 @app.post("/api/vht")
@@ -257,11 +237,6 @@ def fake_address(request: Request):
         }
         requests.post(WEBHOOKURL, data=data)
         return {"error": "Something went wrong"}
-
-
-
-
-            
 
 
 @app.get('/api/caller-id')
@@ -545,135 +520,7 @@ def proxy_scrape_freeproxylistsnet(request: Request):
         }
 
 
-@app.get('/api/tk/getlastvideoid', tags=['tiktok'])
-@limiter.limit("5/minute")
-def tk_getlastvideoid(request: Request, username: str):
-    """
-    This API get last video id from tiktok<br>
-    <pre>
-    :return: JSON<br>
-    </pre>
-    Example:<br>
-    <br>
-    <code>
-    https://server1.majhcc.xyz/api/tk/getlastvideoid?username=edsheeran
-    </code>
-    """
-    from src.tiktok.tiktok_tools import get_last_video_id
-    from src.tiktok.tiktok import getVideo
-    try:
-        id_ = get_last_video_id(username)
-        return {
-            'status': 'success',
-            'video_id': id_,
-            'tiktok_url': f'https://www.tiktok.com/@{username}/video/{id_}',
-            'download_url': getVideo(f'https://www.tiktok.com/@{username}/video/{id_}')['link']
 
-        }
-    except Exception as e:
-        data = {
-            'content': f'Get last video id from youtube api Error: ***{str(e)}***'
-        }
-        requests.post(WEBHOOKURL, data=data)
-        return {
-            'status': 'error'
-        }
-
-
-@app.get('/api/get_last_videoid_youtube', tags=['youtube'])
-@limiter.limit("14/minute")
-def get_last_videoid_youtube(channel_id: str, request: Request):
-    """
-    This can get last video id from YouTube channel.<br>
-    <pre>
-    :param channel_id: Channel ID<br>
-    :return: JSON<br>
-    </pre>
-    Example:<br>
-    <br>
-    <code>
-    https://server1.majhcc.xyz/api/get_last_videoid_youtube?channel_id=UCfzuZdqkX2-jyNXRDGoOpNA
-    </code>
-    """
-    return {"status": "This service is not available now"}
-    # from src.YouTube_tools import get_last_video_id_by_channel
-    # try:
-    #     video_id = get_last_video_id_by_channel(channel_id)
-    #     return {
-    #         'status': 'success',
-    #         "video_id": video_id
-    #     }
-    # except Exception as e:
-    #     # send error to webhook
-    #     data = {
-    #         'content': f'Get last video from youtube api Error: ***{str(e)}***'
-    #     }
-    #     requests.post(WEBHOOKURL, data=data)
-    #     return {
-    #         'status': 'error'}
-
-
-@app.get('/api/get_last_videoid_youtube_by_username', tags=['youtube'])
-@limiter.limit("14/minute")
-def get_last_videoid_youtube_by_username(username: str, request: Request):
-    """
-    This can get last video id from YouTube channel.<br>
-    <pre>
-    :param channel_id: Channel ID<br>
-    :return: JSON<br>
-    </pre>
-    Example:<br>
-    <br>
-    <code>
-    https://server1.majhcc.xyz/api/get_last_videoid_youtube_by_username?username=hussienahmmed
-    </code>
-    """
-    return {"status": "This service is not available now"}
-    # from src.YouTube_tools import get_last_video_id_by_username
-    # try:
-    #     video_id = get_last_video_id_by_username(username)
-    #     return {
-    #         'status': 'success',
-    #         "video_id": video_id
-    #     }
-    # except Exception as e:
-    #     # send error to webhook
-    #     data = {
-    #         'content': f'Get last video from youtube api Error: ***{str(e)}***'
-    #     }
-    #     requests.post(WEBHOOKURL, data=data)
-    #     return {
-    #         'status': 'error'}
-
-
-@app.get('/api/tk/get_user_info')
-@limiter.limit("5/minute")
-def tk_get_user_info(request: Request, username: str):
-    """
-    This API get user info from tiktok<br>
-    <pre>
-    :return: JSON<br>
-    </pre>
-    Example:<br>
-    <br>
-    <code>
-    https://server1.majhcc.xyz/api/tk/get_user_info?username=edsheeran
-    </code>
-    """
-    from src.tiktok.tiktok_tools import get_account_info
-    try:
-        info = get_account_info(username)
-        return {
-            'status': 'success',
-            'info': info
-        }
-    except Exception as e:
-        data = {
-            'content': f'Get user info from tiktok api Error: ***{str(e)}***'
-        }
-        requests.post(WEBHOOKURL, data=data)
-        return {
-            'status': 'error'}
 
 
 @app.get('/api/tk/check_user_exist')
@@ -706,21 +553,6 @@ def tk_check_user_exist(request: Request, username: str):
             'status': 'error'}
 
 
-@app.get('/api/tk/full_list_videos_id_by_username')
-@limiter.limit("10/hour")
-def tk_full_list_videos_id_by_username(request: Request, username: str):
-    from src.tiktok.tiktok_tools import GetVideosIdsByUsermane
-    try:
-        ids = GetVideosIdsByUsermane(username)
-
-        return PlainTextResponse("\n".join(ids), media_type='text/plain')
-    except Exception as e:
-        data = {
-            'content': f'Get full list videos id from tiktok api Error: ***{str(e)}***'
-        }
-        requests.post(WEBHOOKURL, data=data)
-        return {
-            'status': 'error'}
 
 
 @app.get('/api/email/checker/mailru')
@@ -771,10 +603,44 @@ def email_checker_mailru(request: Request, email: str):
             'status': 'error',
             'result': 'Invalid email'
         }
+
+
 @app.get('/api/meaning/ar')
 def ar_meaning(name: str):
     from src.names.meaning.ar.main import get_meaing
     return get_meaing(name)
+
+@app.get('/api/dl/yt')
+def dl_yt(url: str):
+    from src.Youtube.youtube import get_mp3, get_videos
+    # regex get video id from youtube url
+    if re.match(r'^(https?\:\/\/)?(www\.)?(youtube\.com)\/.+$', url):
+        video_id = re.findall(r'(?<=v=)[^&#]+', url)[0]
+    elif re.match(r'^(https?\:\/\/)?(www\.)?(youtu\.be)\/.+$', url):
+        # https://youtu.be/ZafY_rHqAUE
+        video_id = re.findall(r'(?<=youtu\.be\/)[^&#]+', url)[0]
+    else:
+        return {
+            'status': 'error',
+            'result': 'Invalid url'
+        }
+    try:
+        mp3 = get_mp3(video_id)
+        videos = get_videos(video_id)
+        return {
+            'status': 'success',
+            'mp3': mp3,
+            'video': videos
+        }
+    except Exception as e:
+        data = {
+            'content': f'Download youtube video Error: ***{str(e)}***'
+        }
+        requests.post(WEBHOOKURL, data=data)
+        return {
+            'status': 'error'
+        }
+
 
 @app.get('/api/snapchat')
 def snapchat(username: str):
