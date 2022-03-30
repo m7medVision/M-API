@@ -4,12 +4,8 @@
 name: Testing
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
   schedule:
-    cron: "0 0 * * *"
+    cron: '0 0 * * *'
 
 jobs:
   build:
