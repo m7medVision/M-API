@@ -41,8 +41,6 @@ def read_root():
     return RedirectResponse("https://محمد-الجهوري.شبكة")
 
 
-
-
 @app.get("/api/tk", tags=['downloading'])
 async def TikTok(url: str):
     """
@@ -520,9 +518,6 @@ def proxy_scrape_freeproxylistsnet(request: Request):
         }
 
 
-
-
-
 @app.get('/api/tk/check_user_exist')
 @limiter.limit("5/minute")
 def tk_check_user_exist(request: Request, username: str):
@@ -551,8 +546,6 @@ def tk_check_user_exist(request: Request, username: str):
         requests.post(WEBHOOKURL, data=data)
         return {
             'status': 'error'}
-
-
 
 
 @app.get('/api/email/checker/mailru')
@@ -609,6 +602,7 @@ def email_checker_mailru(request: Request, email: str):
 def ar_meaning(name: str):
     from src.names.meaning.ar.main import get_meaing
     return get_meaing(name)
+
 
 @app.get('/api/dl/yt')
 def dl_yt(url: str):

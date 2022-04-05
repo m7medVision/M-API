@@ -11,23 +11,25 @@ tikTokDomains = (
     'https://vt.tiktok.com', 'https://app-va.tiktokv.com', 'https://vm.tiktok.com', 'https://m.tiktok.com', 'https://tiktok.com', 'https://www.tiktok.com', 'https://link.e.tiktok.com', 'https://us.tiktok.com'
 )
 
+
 def getToken(url):
     try:
         response = requests.post('https://musicaldown.com/', headers=headers)
-        
+
         cookies = response.cookies
         soup = BeautifulSoup(response.content, 'html.parser').find_all('input')
 
         data = {
-            soup[0].get('name'):url,
-            soup[1].get('name'):soup[1].get('value'),
-            soup[2].get('name'):soup[2].get('value')
+            soup[0].get('name'): url,
+            soup[1].get('name'): soup[1].get('value'),
+            soup[2].get('name'): soup[2].get('value')
         }
-        
+
         return True, cookies, data
-    
+
     except Exception:
         return None, None, None
+
 
 def getVideo(url):
     if not url.startswith('http'):
@@ -35,7 +37,7 @@ def getVideo(url):
 
     if url.lower().startswith(tikTokDomains):
         url = url.split('?')[0]
-        
+
         status, cookies, data = getToken(url)
 
         if status:
@@ -58,7 +60,8 @@ def getVideo(url):
             }
 
             try:
-                response = requests.post('https://musicaldown.com/download', data=data, headers=headers, allow_redirects=False)
+                response = requests.post(
+                    'https://musicaldown.com/download', data=data, headers=headers, allow_redirects=False)
 
                 if 'location' in response.headers:
                     if response.headers['location'] == '/en/?err=url invalid!':
@@ -74,15 +77,16 @@ def getVideo(url):
                         }
 
                     elif response.headers['location'] == '/mp3/download':
-                        response = requests.post('https://musicaldown.com//mp3/download', data=data, headers=headers)
+                        response = requests.post(
+                            'https://musicaldown.com//mp3/download', data=data, headers=headers)
                         soup = BeautifulSoup(response.content, 'html.parser')
 
                         return {
                             'success': True,
                             'type': 'audio',
-                            'description': soup.findAll('h2', attrs={'class':'white-text'})[0].get_text()[13:],
+                            'description': soup.findAll('h2', attrs={'class': 'white-text'})[0].get_text()[13:],
                             'thumbnail': None,
-                            'link': soup.findAll('a',attrs={'class':'btn waves-effect waves-light orange'})[3]['href'],
+                            'link': soup.findAll('a', attrs={'class': 'btn waves-effect waves-light orange'})[3]['href'],
                             'url': url
                         }
 
@@ -98,9 +102,9 @@ def getVideo(url):
                     return {
                         'success': True,
                         'type': 'video',
-                        'description': soup.findAll('h2', attrs={'class':'white-text'})[0].get_text()[23:-19],
-                        'thumbnail': soup.findAll('img',attrs={'class':'responsive-img'})[0]['src'],
-                        'link': soup.findAll('a',attrs={'class':'btn waves-effect waves-light orange'})[3]['href'],
+                        'description': soup.findAll('h2', attrs={'class': 'white-text'})[0].get_text()[23:-19],
+                        'thumbnail': soup.findAll('img', attrs={'class': 'responsive-img'})[0]['src'],
+                        'link': soup.findAll('a', attrs={'class': 'btn waves-effect waves-light orange'})[3]['href'],
                         'url': url
                     }
 
@@ -109,15 +113,15 @@ def getVideo(url):
                     'success': False,
                     'error': 'exception'
                 }
-        
+
         else:
             return {
-                        'success': False,
-                        'error': 'exception'
-                    }
+                'success': False,
+                'error': 'exception'
+            }
 
     else:
         return {
-                    'success': False,
-                    'error': 'invalidUrl'
-                }
+            'success': False,
+            'error': 'invalidUrl'
+        }

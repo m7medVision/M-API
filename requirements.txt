@@ -1,8 +1,8 @@
-lxml==4.7.1
-uvicorn==0.15.0
-youtube_dl==2021.6.6
-pydantic==1.8.2
-requests==2.26.0
-beautifulsoup4==4.10.0
-fastapi==0.70.1
+lxml
+uvicorn
+youtube_dl
+pydantic
+requests
+beautifulsoup4
+fastapi
 slowapi

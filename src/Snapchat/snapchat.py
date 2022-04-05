@@ -1,5 +1,7 @@
 import requests
 import re
+
+
 def main(username):
     try:
         url = "https://www.snapchat.com/add/{}}".format(username)
@@ -11,10 +13,10 @@ def main(username):
         snaps = re.findall(r'"snapUrls":{"mediaUrl":"(.*?)"', res.text)
         return {
             'status': True,
-            "media": snaps 
-            }
+            "media": snaps
+        }
     except Exception as e:
         return {
             'status': False,
             'message': str(e)
-            }
+        }

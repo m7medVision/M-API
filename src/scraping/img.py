@@ -1,6 +1,7 @@
 import re
 import requests
 
+
 def main(url):
     res = requests.get(url)
     html = res.text

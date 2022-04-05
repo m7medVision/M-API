@@ -3,6 +3,7 @@ import re
 from bs4 import BeautifulSoup
 import urllib.parse
 
+
 def get_meaing(name):
     if re.match(r'[\u0600-\u06FF\s]+', name):
         headers = {
@@ -27,11 +28,12 @@ def get_meaing(name):
         }
 
         data = {
-        'name': name,
-        'ajax': 'TRUE'
+            'name': name,
+            'ajax': 'TRUE'
         }
 
-        response = requests.post('https://meaningnames.net/mean.php', headers=headers, data=data)
+        response = requests.post(
+            'https://meaningnames.net/mean.php', headers=headers, data=data)
         soup = BeautifulSoup(response.text, 'lxml')
         try:
             meaning = soup.find('h3', {'style': "line-height: 215%;"}).text
@@ -40,7 +42,7 @@ def get_meaing(name):
                 'meaning': meaning,
                 'img': img,
                 'status': True
-                }
+            }
         except:
             return {'meaning': '', 'img': '', 'status': False}
     else:

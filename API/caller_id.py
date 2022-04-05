@@ -1,13 +1,14 @@
 import requests
 import json
 
+
 def get_names(number, country):
     try:
         url = f"https://devappteamcall.site/data/search_name?country={country}"
-        payload={
-        'phoneNumber': number
+        payload = {
+            'phoneNumber': number
         }
-        headers= {
+        headers = {
             'Authorization': 'Basic YWEyNTAyOnp1enVBaGgy',
             'User-Agent': 'Dalvik/2.1.0 (Linux; U; Android 5.1.1; SM-G965N Build/QP1A.190711.020)',
             'Host': 'devappteamcall.site',
@@ -25,11 +26,9 @@ def get_names(number, country):
         return {
             'status': 'success',
             'names': naMes
-            }
+        }
     except:
         return {
             "error": "Something went wrong",
             'error_code': '500'
         }
-    
-

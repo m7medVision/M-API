@@ -7,5 +7,3 @@ def get_btc_price():
     response = requests.get(url)
     btc_price = json.loads(response.text)
     return btc_price['data']['BTC']['ohlc']['c']
-    
-print(get_btc_price())
