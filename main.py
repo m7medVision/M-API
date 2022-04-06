@@ -606,26 +606,10 @@ def ar_meaning(name: str):
 
 @app.get('/api/dl/yt')
 def dl_yt(url: str):
-    from src.Youtube.youtube import get_mp3, get_videos
-    # regex get video id from youtube url
-    if re.match(r'^(https?\:\/\/)?(www\.)?(youtube\.com)\/.+$', url):
-        video_id = re.findall(r'(?<=v=)[^&#]+', url)[0]
-    elif re.match(r'^(https?\:\/\/)?(www\.)?(youtu\.be)\/.+$', url):
-        # https://youtu.be/ZafY_rHqAUE
-        video_id = re.findall(r'(?<=youtu\.be\/)[^&#]+', url)[0]
-    else:
-        return {
-            'status': 'error',
-            'result': 'Invalid url'
-        }
+    from src.Youtube.youtube import get_info
     try:
-        mp3 = get_mp3(video_id)
-        videos = get_videos(video_id)
-        return {
-            'status': 'success',
-            'mp3': mp3,
-            'video': videos
-        }
+        resopnses = get_info(url)
+        return resopnses
     except Exception as e:
         data = {
             'content': f'Download youtube video Error: ***{str(e)}***'
