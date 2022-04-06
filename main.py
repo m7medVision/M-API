@@ -89,36 +89,6 @@ async def twitter(url: str):
         return {"error": "Something went wrong"}
 
 
-@app.get("/api/tw", tags=['downloading'])
-async def Twitter_v2(url: str):
-    """
-    This also can download videos from Twitter but it's faster than Twitter v1.<br>
-    <pre>
-    :param url: Twitter video URL<br>
-    :return: JSON<br>
-    </pre>
-    Example:<br>
-    <br>
-    <code>
-    https://server1.majhcc.xyz/api/tw?url=https://twitter.com/AJArabic/status/1476130879437037569
-    </code>
-    """
-    from src.tweet import get_url_download
-    try:
-        # twitter url regex vailidation
-        if re.match(r'https://twitter.com/[A-Za-z0-9_]+/status/[0-9]+', url):
-            return get_url_download(url)
-        else:
-            return {"error": "Invalid URL"}
-    except Exception as e:
-        # send to webhook
-        data = {
-            "content": f"***{e}***"
-        }
-        requests.post(WEBHOOKURL, data=data)
-        return {"error": "Something went wrong"}
-
-
 @app.get("/api/BTC", tags=["crypto"])
 async def btc():
     """
