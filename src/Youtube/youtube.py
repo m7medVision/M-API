@@ -1,11 +1,15 @@
 from yt_dlp import YoutubeDL
 import re
+
+
 def check_url(url):
     regex = re.compile(r'^(https?\:\/\/)?(www\.youtube\.com|youtu\.be)\/.+$')
     if regex.match(url):
         return True
     else:
         return False
+
+
 def get_info(url):
     if check_url(url):
         with YoutubeDL() as ydl:
@@ -30,10 +34,9 @@ def get_info(url):
                     js1['filesize'] = "None"
 
                 jsonres.append(js1)
-            return {  
+            return {
                 'status': 'success',
-                'result':jsonres
-                }
+                'result': jsonres
+            }
     else:
         return {'status': 'error', 'message': 'Invalid URL'}
-    

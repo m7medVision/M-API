@@ -1,3 +1,4 @@
+from main import app
 from urllib import response
 import pytest
 from fastapi.testclient import TestClient
@@ -9,10 +10,8 @@ current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(current)
 sys.path.append(parent)
 
-from main import app
 
 client = TestClient(app)
-
 
 
 def test_tiktok_downloader():
@@ -60,8 +59,6 @@ def test_fake_add():
     assert response.status_code == 200
 
 
-
-
 def test_caller_id():
     """This test will check if the caller id is working"""
     response = client.get("/api/caller-id?country_code=US&number=123456789")
@@ -82,13 +79,10 @@ def test_microsoft_mail_checker():
     assert response.json()['status'] == "success"
 
 
-
 def test_check_user_tiktok():
     """This test will check if the user info tiktok is working"""
     response = client.get("/api/tk/check_user_exist?username=majhc")
     assert response.json()['status'] == "success"
-
-
 
 
 def test_names_meaning():
@@ -96,7 +90,9 @@ def test_names_meaning():
     response = client.get("/api/meaning/ar?name=محمد")
     assert response.json()['status'] == True
 
+
 def test_dlyt():
     """this tes wihll check if the dlyt is working"""
-    response = client.get("/api/dl/yt?url=https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+    response = client.get(
+        "/api/dl/yt?url=https://www.youtube.com/watch?v=dQw4w9WgXcQ")
     assert response.json()['status'] == 'success'
