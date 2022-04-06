@@ -1,5 +1,6 @@
 lxml
 uvicorn
+youtube_dl
 yt-dlp
 pydantic
 requests
