@@ -94,3 +94,8 @@ def test_dlyt():
     """this tes wihll check if the dlyt is working"""
     response = client.get("/api/dl/yt?url=https://www.youtube.com/watch?v=dQw4w9WgXcQ")
     assert response.json()['status'] == 'success'
+
+def test_adv_search():
+    """this tes wihll check if the advanced search is working"""
+    response = client.get("api/advanced_google_search?query=majhcc&county=us&language=en")
+    assert response.json()['status'] == 'success'

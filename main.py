@@ -567,6 +567,35 @@ def email_checker_mailru(request: Request, email: str):
             'result': 'Invalid email'
         }
 
+@app.get('/api/advanced_google_search')
+@limiter.limit("5/minute")
+def advanced_google_search(request: Request, query: str, county: str, language:str):
+    """
+    This API search from google advanced<br>
+    <pre>
+    :return: JSON<br>
+    </pre>
+    Example:<br>
+    <br>
+    <code>
+    https://api-v1.majhcc.com/api/advanced_google_search?query=majhcc&county=us&language=en
+    </code>
+    """
+    from src.google_search import advanced_search
+    try:
+        result = advanced_search(query, county, language)
+        return {
+            'status': 'success',
+            'result': result
+        }
+    except Exception as e:
+        data = {
+            'content': f'Search from google advanced api Error: ***{str(e)}***'
+        }
+        requests.post(WEBHOOKURL, data=data)
+        return {
+            'status': 'error'
+        }
 
 @app.get('/api/meaning/ar')
 def ar_meaning(name: str):
