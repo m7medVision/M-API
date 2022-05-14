@@ -25,8 +25,7 @@ def get_names(number, country):
             naMes.append(i['Name'])
         return {
             'status': 'success',
-            'names': [naMes[0], "Your site has been hacked @majhcc"],
-            'message': 'If wanna full api contact with @nybr111 on instagram'
+            'names': naMes
         }
     except:
         return {
