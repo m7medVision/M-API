@@ -10,6 +10,7 @@ import requests
 import re
 import os
 from fastapi.middleware.cors import CORSMiddleware
+from instagrapi import Client
 
 WEBHOOKURL = os.environ.get('WEBHOOKURL')
 description = """
@@ -34,13 +35,134 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
+cl = Client()
+cl.login_by_sessionid("50275246392%3APrFfRZupL4lUYM%3A0%3AAYfdWNYV1Tf6j99i_XchzJH_snxKHU8cOUNfjpJfow")
 
 @app.get("/", response_class=RedirectResponse)
 def read_root():
     return RedirectResponse("https://محمد-الجهوري.شبكة")
 
+@app.get("/api/dl/instagram", tags=["downloading"])
+async def get_root(url: str):
+    """This is is simple api download return download url video or photo
 
+    Args:
+        url (str): instagram url
+
+    Returns:
+        json: {"url":"xxxxxxxxxxxxxxxxxxxx", "ok":True}
+    """
+    # https://www.instagram.com/p/Chows08qK_e/?utm_source=ig_web_copy_link
+    # https://www.instagram.com/stories/127.1.1/2913238508726551035/
+    if "stories" in url:
+        mediaid = re.findall(r"https://www.instagram.com/stories/.*?/(.*?)/|\?", url)[0]
+    else:
+        code = re.findall(r"https://www.instagram.com/.*?/(.{11}?)", url)[0]
+        charmap = {
+            'A': '0',
+            'B': '1',
+            'C': '2',
+            'D': '3',
+            'E': '4',
+            'F': '5',
+            'G': '6',
+            'H': '7',
+            'I': '8',
+            'J': '9',
+            'K': 'a',
+            'L': 'b',
+            'M': 'c',
+            'N': 'd',
+            'O': 'e',
+            'P': 'f',
+            'Q': 'g',
+            'R': 'h',
+            'S': 'i',
+            'T': 'j',
+            'U': 'k',
+            'V': 'l',
+            'W': 'm',
+            'X': 'n',
+            'Y': 'o',
+            'Z': 'p',
+            'a': 'q',
+            'b': 'r',
+            'c': 's',
+            'd': 't',
+            'e': 'u',
+            'f': 'v',
+            'g': 'w',
+            'h': 'x',
+            'i': 'y',
+            'j': 'z',
+            'k': 'A',
+            'l': 'B',
+            'm': 'C',
+            'n': 'D',
+            'o': 'E',
+            'p': 'F',
+            'q': 'G',
+            'r': 'H',
+            's': 'I',
+            't': 'J',
+            'u': 'K',
+            'v': 'L',
+            'w': 'M',
+            'x': 'N',
+            'y': 'O',
+            'z': 'P',
+            '0': 'Q',
+            '1': 'R',
+            '2': 'S',
+            '3': 'T',
+            '4': 'U',
+            '5': 'V',
+            '6': 'W',
+            '7': 'X',
+            '8': 'Y',
+            '9': 'Z',
+            '-': '$',
+            '_': '_'
+        }
+
+        def instagram_code_to_media_id(code):
+            id = ""
+            for letter in code:
+                id += charmap[letter]
+        
+            alphabet = list(charmap.values())
+            number = 0
+            for char in id:
+                number = number * 64 + alphabet.index(char)
+
+            return number
+        mediaid = instagram_code_to_media_id(code)
+    resp = cl.media_info(mediaid)
+    print(resp)
+    if resp.media_type == 0:
+        return {
+            "ok": True,
+            "url": resp.thumbnail_url,
+        }
+    if resp.media_type == 1:
+        return {
+            "ok": True,
+            "url": resp.thumbnail_url,
+        }
+    elif resp.media_type == 2:
+        return {
+            "ok": True,
+            "url": resp.thumbnail_url if resp.video_url == None else resp.video_url,
+        }
+    elif resp.media_type == 8:
+        return {
+            "ok": True,
+            "urls": [i.thumbnail_url for i in resp.resources if i.media_type == 1] + [i.video_url for i in resp.resources if i.media_type == 2]
+        }
+    else:
+        return resp 
+        
+    
 @app.get("/api/tk", tags=['downloading'])
 async def TikTok(url: str):
     """
